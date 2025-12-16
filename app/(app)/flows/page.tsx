@@ -35,6 +35,8 @@ const MOCK_FLOWS: Flow[] = [
 
 export default function FlowsPage() {
     const [flows, setFlows] = useState<Flow[]>(MOCK_FLOWS);
+    const [selectedFlowId, setSelectedFlowId] = useState<string | null>(null);
+
 
     const handleCreateFlow = (newFlowData: Omit<Flow, "id" | "createdAt">) => {
         const newFlow: Flow = {
@@ -54,7 +56,7 @@ export default function FlowsPage() {
             <div className="lg:col-span-8 flex flex-col h-full space-y-8 overflow-y-auto pr-2 no-scrollbar">
 
                 <div className="space-y-2">
-                    <h1 className="text-xl font-bold tracking-tight text-gray-900">Create a Flow</h1>
+                    <h1 className="text-2xl font-bold tracking-tight text-gray-900">Create a Flow</h1>
                     <p className="text-gray-500">Add a new flow to organize your tasks effectively.</p>
                 </div>
 
@@ -68,7 +70,8 @@ export default function FlowsPage() {
 
                     <div className="flex flex-col gap-3">
                         {flows.map((flow) => (
-                            <FlowCard key={flow.id} flow={flow} onClick={() => console.log('Clicked flow', flow.id)} />
+                            <FlowCard key={flow.id} flow={flow} selected={flow.id === selectedFlowId}
+                                onClick={() => setSelectedFlowId(flow.id)} />
                         ))}
                     </div>
                 </div>

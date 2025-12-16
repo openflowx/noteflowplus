@@ -4,42 +4,65 @@ import { cn } from "@/lib/utils";
 
 interface FlowCardProps {
     flow: Flow;
+    selected?: boolean;
     onClick?: () => void;
 }
 
-const colorStyles = {
-    lime: "bg-lime-100 border-lime-200 hover:bg-lime-200 text-lime-900",
-    orange: "bg-orange-100 border-orange-200 hover:bg-orange-200 text-orange-900",
-    blue: "bg-blue-100 border-blue-200 hover:bg-blue-200 text-blue-900",
-};
-
-export function FlowCard({ flow, onClick }: FlowCardProps) {
+export function FlowCard({ flow, selected = false, onClick }: FlowCardProps) {
     return (
         <div
-            className={cn(
-                "group cursor-pointer rounded-2xl p-5 transition-all duration-200 hover:shadow-md",
-                colorStyles[flow.color]
-            )}
             onClick={onClick}
+            className={cn(
+                "cursor-pointer rounded-2xl p-5 transition-all duration-200",
+                "shadow-sm hover:shadow-md",
+                selected
+                    ? "bg-sky-500 text-white shadow-lg"
+                    : "bg-white text-gray-900"
+            )}
         >
             <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-start">
-                    <h3 className="text-lg font-bold tracking-tight">{flow.name}</h3>
-                    <span className="text-xs font-medium uppercase tracking-wider opacity-60">
-                        {flow.createdAt.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                    <h3 className="text-lg font-semibold tracking-tight">
+                        {flow.name}
+                    </h3>
+
+                    <span
+                        className={cn(
+                            "text-xs font-medium uppercase tracking-wider",
+                            selected ? "text-white/80" : "text-gray-400"
+                        )}
+                    >
+                        {flow.createdAt.toLocaleDateString(undefined, {
+                            month: "short",
+                            day: "numeric",
+                        })}
                     </span>
                 </div>
 
                 {flow.description && (
-                    <p className="text-sm font-medium opacity-80 line-clamp-2">
+                    <p
+                        className={cn(
+                            "text-sm line-clamp-2",
+                            selected ? "text-white/90" : "text-gray-600"
+                        )}
+                    >
                         {flow.description}
                     </p>
                 )}
 
-                {flow.tags && flow.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mt-1">
+                {flow.tags?.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-2">
                         {flow.tags.map((tag) => (
-                            <Badge key={tag} variant="secondary" className="bg-white/40 hover:bg-white/60 text-black border-transparent font-normal">
+                            <Badge
+                                key={tag}
+                                variant="secondary"
+                                className={cn(
+                                    "border-transparent font-normal",
+                                    selected
+                                        ? "bg-white/20 text-white"
+                                        : "bg-gray-100 text-gray-700"
+                                )}
+                            >
                                 {tag}
                             </Badge>
                         ))}
