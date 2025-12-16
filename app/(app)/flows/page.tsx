@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CreateFlowForm } from "@/components/flow/create-flow-form";
+import { CreateFlowForm } from "@/components/flow/flow-form";
 import { FlowCard } from "@/components/flow/flow-card";
 import { FlowHero } from "@/components/flow/flow-hero";
 import { Flow } from "@/types/flow";
@@ -12,7 +12,6 @@ const MOCK_FLOWS: Flow[] = [
         name: 'Morning Routine',
         description: 'Daily habits and tasks to kickstart the day with positive energy.',
         tags: ['Routine', 'Health'],
-        color: 'lime',
         createdAt: new Date()
     },
     {
@@ -20,7 +19,6 @@ const MOCK_FLOWS: Flow[] = [
         name: 'Design System',
         description: 'Component library and style guide for the new project.',
         tags: ['Work', 'Design'],
-        color: 'blue',
         createdAt: new Date()
     },
     {
@@ -28,7 +26,6 @@ const MOCK_FLOWS: Flow[] = [
         name: 'Weekly Goals',
         description: 'Top priorities to focus on this week.',
         tags: ['Planning'],
-        color: 'orange',
         createdAt: new Date()
     },
 ];
@@ -56,8 +53,8 @@ export default function FlowsPage() {
             <div className="lg:col-span-8 flex flex-col h-full space-y-8 overflow-y-auto pr-2 no-scrollbar">
 
                 <div className="space-y-2">
-                    <h1 className="text-2xl font-bold tracking-tight text-gray-900">Create a Flow</h1>
-                    <p className="text-gray-500">Add a new flow to organize your tasks effectively.</p>
+                    <h1 className="text-2xl font-bold tracking-tight text-gray-900">Flows Management</h1>
+                    <p className="text-gray-500">Manage your flows here.</p>
                 </div>
 
                 <CreateFlowForm onSubmit={handleCreateFlow} />

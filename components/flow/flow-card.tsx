@@ -13,7 +13,7 @@ export function FlowCard({ flow, selected = false, onClick }: FlowCardProps) {
         <div
             onClick={onClick}
             className={cn(
-                "cursor-pointer rounded-2xl p-5 transition-all duration-200",
+                "cursor-pointer rounded-3xl p-5 transition-all duration-200",
                 "shadow-sm hover:shadow-md",
                 selected
                     ? "bg-sky-500 text-white shadow-lg"
