@@ -9,7 +9,7 @@ export default function AppLayout({
     return (
         <SidebarProvider>
             <AppSidebar />
-            <main className="flex-1 w-full bg-[#f3f4f6] min-h-screen">
+            <main className="flex-1 w-full bg-white min-h-screen">
                 <div className="">
                     <SidebarTrigger />
                 </div>
