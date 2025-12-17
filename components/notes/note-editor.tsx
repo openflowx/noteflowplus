@@ -3,6 +3,10 @@
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { EditorToolbar } from './editor-toolbar'
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+import { all, createLowlight } from 'lowlight'
+
+const lowlight = createLowlight(all)
 
 interface NoteEditorProps {
     content?: string;
@@ -16,6 +20,10 @@ const NoteEditor = ({ content = '', onChange }: NoteEditorProps) => {
                 heading: {
                     levels: [1, 2],
                 },
+                codeBlock: false,
+            }),
+            CodeBlockLowlight.configure({
+                lowlight,
             }),
         ],
         content: content,

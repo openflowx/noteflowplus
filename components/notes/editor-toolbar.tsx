@@ -11,6 +11,7 @@ import {
     Redo,
     Heading1,
     Heading2,
+    Code,
 } from 'lucide-react'
 import { Toggle } from '@/components/ui/toggle'
 import { Button } from '@/components/ui/button'
@@ -87,6 +88,14 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
                 aria-label="Toggle Blockquote"
             >
                 <Quote className="h-4 w-4" />
+            </Toggle>
+            <Toggle
+                size="sm"
+                pressed={editor.isActive('codeBlock')}
+                onPressedChange={() => editor.chain().focus().toggleCodeBlock().run()}
+                aria-label="Toggle Code Block"
+            >
+                <Code className="h-4 w-4" />
             </Toggle>
 
             <div className="ml-auto flex gap-1">
