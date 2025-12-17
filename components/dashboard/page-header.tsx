@@ -5,6 +5,8 @@ import {
     Settings,
     LogOut,
     User,
+    LogIn,
+    UserPlus,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -14,6 +16,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 
 export function PageHeader() {
     return (
@@ -31,33 +34,56 @@ export function PageHeader() {
                     <Bell className="h-5 w-5 text-gray-600" />
                 </Button>
 
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button
-                            variant="ghost"
-                            className="h-10 w-10 rounded-full bg-blue-100 p-0 hover:bg-blue-200"
-                        >
-                            <Avatar className="h-10 w-10">
-                                <AvatarImage src="" />
-                                <AvatarFallback className="bg-blue-100 text-blue-600 font-semibold">
-                                    JS
-                                </AvatarFallback>
-                            </Avatar>
-                        </Button>
-                    </DropdownMenuTrigger>
+                <div className="flex items-center">
+                    <SignedIn>
+                        <UserButton
+                            appearance={{
+                                elements: {
+                                    userButtonAvatarBox: "h-10 w-10",
+                                    userButtonTrigger: "rounded-full focus:shadow-none"
+                                }
+                            }}
+                        />
+                    </SignedIn>
 
-                    <DropdownMenuContent align="end" className="w-48">
-                        <DropdownMenuItem>
-                            <User className="mr-2 h-4 w-4" /> Profile
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <Settings className="mr-2 h-4 w-4" /> Settings
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-500 focus:text-red-500">
-                            <LogOut className="mr-2 h-4 w-4" /> Log out
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                    <SignedOut>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    className="h-10 w-10 rounded-full bg-gray-100 p-0 hover:bg-gray-200 outline-none focus-visible:ring-0"
+                                >
+                                    <Avatar className="h-10 w-10">
+                                        <AvatarImage src="" />
+                                        <AvatarFallback className="bg-gray-100 text-gray-400">
+                                            <User className="h-5 w-5" />
+                                        </AvatarFallback>
+                                    </Avatar>
+                                </Button>
+                            </DropdownMenuTrigger>
+
+                            <DropdownMenuContent align="end" className="w-48">
+                                <DropdownMenuItem asChild>
+                                    <SignInButton mode="modal">
+                                        <button className="flex w-full items-center p-1 cursor-pointer">
+                                            <LogIn className="mr-2 h-4 w-4" />
+                                            <span>Sign In</span>
+                                        </button>
+                                    </SignInButton>
+                                </DropdownMenuItem>
+
+                                <DropdownMenuItem asChild>
+                                    <SignUpButton mode="modal">
+                                        <button className="flex w-full items-center p-1 cursor-pointer">
+                                            <UserPlus className="mr-2 h-4 w-4" />
+                                            <span>Sign Up</span>
+                                        </button>
+                                    </SignUpButton>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </SignedOut>
+                </div>
             </div>
         </header>
     )
