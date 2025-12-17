@@ -60,9 +60,10 @@ const NavItem = ({ label, href }: { label: string; href: string }) => {
 const Actions = () => {
     return (
         <div className="flex items-center gap-3">
-            <Button className="rounded-full bg-black px-6 text-white hover:bg-gray-900">
+            <Link href="/dashboard"> <Button className="rounded-full bg-black px-6 text-white hover:bg-gray-900">
                 Try our app <span className="ml-2">↗</span>
-            </Button>
+            </Button></Link>
+
 
             <Button
                 variant="outline"
