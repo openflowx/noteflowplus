@@ -2,8 +2,6 @@
 
 import {
     Bell,
-    Settings,
-    LogOut,
     User,
     LogIn,
     UserPlus,
@@ -51,10 +49,8 @@ export function PageHeader() {
                             <DropdownMenuTrigger asChild>
                                 <Button
                                     variant="ghost"
-                                    className="h-10 w-10 rounded-full bg-gray-100 p-0 hover:bg-gray-200 outline-none focus-visible:ring-0"
-                                >
+                                    className="h-10 w-10 rounded-full bg-gray-100 p-0 hover:bg-gray-200 outline-none focus-visible:ring-2 focus-visible:ring-offset-2">
                                     <Avatar className="h-10 w-10">
-                                        <AvatarImage src="" />
                                         <AvatarFallback className="bg-gray-100 text-gray-400">
                                             <User className="h-5 w-5" />
                                         </AvatarFallback>
