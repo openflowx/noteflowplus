@@ -6,6 +6,7 @@ export const flows = pgTable("flows", {
     userId: text("user_id").notNull(), // Clerk user ID
     title: text("title").notNull(),
     description: text("description"),
+    tags: text("tags").array().notNull().default([]),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

@@ -23,7 +23,7 @@ export function FlowCard({ flow, selected = false, onClick }: FlowCardProps) {
             <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-start">
                     <h3 className="text-lg font-semibold tracking-tight">
-                        {flow.name}
+                        {flow.title}
                     </h3>
 
                     <span
