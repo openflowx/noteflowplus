@@ -7,11 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { flowSchema, type FlowFormValues } from "@/schemas/flow";
+import { flowSchema, type FlowFormValues, type FlowInsertValues } from "@/schemas/flow";
 import { toast } from "sonner";
 
 interface CreateFlowFormProps {
-    onSubmit: (values: FlowFormValues) => Promise<void>;
+    onSubmit: (values: FlowInsertValues) => Promise<void>;
 }
 
 export function CreateFlowForm({ onSubmit }: CreateFlowFormProps) {
@@ -20,7 +20,7 @@ export function CreateFlowForm({ onSubmit }: CreateFlowFormProps) {
         handleSubmit,
         reset,
         formState: { errors, isSubmitting },
-    } = useForm<FlowFormValues>({
+    } = useForm<FlowFormValues, any, FlowInsertValues>({
         resolver: zodResolver(flowSchema),
         defaultValues: {
             title: "",
@@ -29,7 +29,7 @@ export function CreateFlowForm({ onSubmit }: CreateFlowFormProps) {
         },
     });
 
-    const onFormSubmit = async (data: FlowFormValues) => {
+    const onFormSubmit = async (data: FlowInsertValues) => {
         try {
             await onSubmit(data);
             reset();

@@ -5,14 +5,14 @@ export const flowSchema = z.object({
     description: z.string().optional(),
     tags: z
         .string()
-        .min(1, "At least one tag is required")
+        .transform((val) =>
+            val.split(",").map(t => t.trim()).filter(Boolean)
+        )
         .refine(
-            (val) => {
-                const tags = val.split(",").map((t) => t.trim()).filter(Boolean);
-                return tags.length > 0 && tags.length <= 3;
-            },
-            { message: "Between 1 and 3 tags required, separated by commas" }
+            (tags) => tags.length >= 1 && tags.length <= 3,
+            { message: "Between 1 and 3 tags required" }
         ),
 });
 
-export type FlowFormValues = z.infer<typeof flowSchema>;
+export type FlowFormValues = z.input<typeof flowSchema>;
+export type FlowInsertValues = z.output<typeof flowSchema>;

@@ -6,15 +6,13 @@ import { CreateFlowForm } from "@/components/flow/flow-form";
 import { FlowCard } from "@/components/flow/flow-card";
 import { FlowHero } from "@/components/flow/flow-hero";
 import { Flow } from "@/types/flow";
-import { FlowFormValues } from "@/schemas/flow";
+import { FlowInsertValues } from "@/schemas/flow";
 import { createFlowAction, getFlowsAction } from "@/app/actions/flow";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+
 
 export default function FlowsPage() {
-    const { isLoaded, isSignedIn, user } = useUser();
+    const { isLoaded, isSignedIn } = useUser();
     const { redirectToSignIn } = useClerk();
-    const router = useRouter();
     const [flows, setFlows] = useState<Flow[]>([]);
     const [selectedFlowId, setSelectedFlowId] = useState<string | null>(null);
 
@@ -40,7 +38,7 @@ export default function FlowsPage() {
         );
     }
 
-    const handleCreateFlow = async (values: FlowFormValues) => {
+    const handleCreateFlow = async (values: FlowInsertValues) => {
         try {
             await createFlowAction(values);
             await fetchFlows();

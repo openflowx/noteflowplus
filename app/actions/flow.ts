@@ -3,46 +3,50 @@
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
 import { flows } from "@/db/schema";
-import { flowSchema, FlowFormValues } from "@/schemas/flow";
+import { flowSchema, type FlowInsertValues } from "@/schemas/flow";
 import { revalidatePath } from "next/cache";
-import { eq } from "drizzle-orm";
 import { Flow } from "@/types/flow";
+import { eq } from "drizzle-orm";
 
-export async function createFlowAction(values: FlowFormValues) {
+export const createFlowAction = async (values: unknown) => {
     const { userId } = await auth();
 
     if (!userId) {
-        throw new Error("Unauthorized");
+        return { success: false, message: "Unauthorized" };
     }
 
-    const validatedFields = flowSchema.safeParse(values);
+    const parsed = flowSchema.safeParse(values);
 
-    if (!validatedFields.success) {
-        throw new Error("Invalid fields");
+    if (!parsed.success) {
+        return {
+            success: false,
+            message: "Validation failed",
+        };
     }
 
-    const { title, description, tags } = validatedFields.data;
-
-    // Transform comma string to array
-    const tagsArray = tags.split(",").map((t) => t.trim()).filter(Boolean);
+    const data: FlowInsertValues = parsed.data;
 
     await db.insert(flows).values({
         userId,
-        title,
-        description,
-        tags: tagsArray,
+        ...data,
     });
 
     revalidatePath("/flows");
-}
 
-export async function getFlowsAction() {
+    return { success: true, message: "Flow created successfully" };
+};
+
+export const getFlowsAction = async (): Promise<Flow[]> => {
     const { userId } = await auth();
 
     if (!userId) {
         return [];
     }
 
-    const userFlows = await db.select().from(flows).where(eq(flows.userId, userId));
+    const userFlows = await db
+        .select()
+        .from(flows)
+        .where(eq(flows.userId, userId));
+
     return userFlows as Flow[];
 }
