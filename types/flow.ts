@@ -4,6 +4,6 @@ export interface Flow {
     title: string;
     description?: string;
     tags: string[];
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
