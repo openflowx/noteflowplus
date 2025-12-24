@@ -1,16 +1,31 @@
 import { pgTable, text, timestamp, uuid, integer, date, primaryKey, jsonb } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
+// FLOWS 
 export const flows = pgTable("flows", {
     id: uuid("id").primaryKey().defaultRandom(),
     userId: text("user_id").notNull(), // Clerk user ID
     title: text("title").notNull(),
     description: text("description"),
-    tags: text("tags").array().notNull().default([]),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+// TAGS 
+export const tags = pgTable("tags", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull().unique(),
+});
+
+// FLOW_TAGS (junction table) 
+export const flowTags = pgTable("flow_tags", {
+    flowId: uuid("flow_id").references(() => flows.id, { onDelete: "cascade" }).notNull(),
+    tagId: uuid("tag_id").references(() => tags.id, { onDelete: "cascade" }).notNull(),
+}, (table) => [
+    primaryKey({ columns: [table.flowId, table.tagId] }),
+]);
+
+// NOTES 
 export const notes = pgTable("notes", {
     id: uuid("id").primaryKey().defaultRandom(),
     flowId: uuid("flow_id").references(() => flows.id, { onDelete: "cascade" }).notNull(),
@@ -20,6 +35,7 @@ export const notes = pgTable("notes", {
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+// AI QUESTIONS 
 export const aiQuestions = pgTable("ai_questions", {
     id: uuid("id").primaryKey().defaultRandom(),
     flowId: uuid("flow_id").references(() => flows.id, { onDelete: "cascade" }).notNull(),
@@ -28,6 +44,7 @@ export const aiQuestions = pgTable("ai_questions", {
     createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// QUIZZES 
 export const quizzes = pgTable("quizzes", {
     id: uuid("id").primaryKey().defaultRandom(),
     flowId: uuid("flow_id").references(() => flows.id, { onDelete: "cascade" }).notNull(),
@@ -36,6 +53,7 @@ export const quizzes = pgTable("quizzes", {
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+// QUIZ QUESTIONS 
 export const quizQuestions = pgTable("quiz_questions", {
     id: uuid("id").primaryKey().defaultRandom(),
     quizId: uuid("quiz_id").references(() => quizzes.id, { onDelete: "cascade" }).notNull(),
@@ -44,6 +62,7 @@ export const quizQuestions = pgTable("quiz_questions", {
     correctOption: text("correct_option").notNull(),
 });
 
+// QUIZ ATTEMPTS 
 export const quizAttempts = pgTable("quiz_attempts", {
     id: uuid("id").primaryKey().defaultRandom(),
     quizId: uuid("quiz_id").references(() => quizzes.id, { onDelete: "cascade" }).notNull(),
@@ -53,14 +72,16 @@ export const quizAttempts = pgTable("quiz_attempts", {
     attemptedAt: timestamp("attempted_at").defaultNow().notNull(),
 });
 
+// DAILY ACTIVITY 
 export const dailyActivity = pgTable("daily_activity", {
     userId: text("user_id").notNull(), // Clerk user ID
     activityDate: date("activity_date").notNull(),
     totalTimeSeconds: integer("total_time_seconds").notNull(),
-}, (table) => ({
-    pk: primaryKey({ columns: [table.userId, table.activityDate] }),
-}));
+}, (table) => [
+    primaryKey({ columns: [table.userId, table.activityDate] }),
+]);
 
+// EVENTS 
 export const events = pgTable("events", {
     id: uuid("id").primaryKey().defaultRandom(),
     flowId: uuid("flow_id").references(() => flows.id, { onDelete: "cascade" }).notNull(),
@@ -70,11 +91,13 @@ export const events = pgTable("events", {
     description: text("description"),
 });
 
+// RELATIONS 
 export const flowsRelations = relations(flows, ({ many }) => ({
     notes: many(notes),
     aiQuestions: many(aiQuestions),
     quizzes: many(quizzes),
     events: many(events),
+    flowTags: many(flowTags),
 }));
 
 export const notesRelations = relations(notes, ({ one }) => ({
@@ -103,4 +126,13 @@ export const dailyActivityRelations = relations(dailyActivity, ({ }) => ({}));
 
 export const eventsRelations = relations(events, ({ one }) => ({
     flow: one(flows, { fields: [events.flowId], references: [flows.id] }),
+}));
+
+export const tagsRelations = relations(tags, ({ many }) => ({
+    flowTags: many(flowTags),
+}));
+
+export const flowTagsRelations = relations(flowTags, ({ one }) => ({
+    flow: one(flows, { fields: [flowTags.flowId], references: [flows.id] }),
+    tag: one(tags, { fields: [flowTags.tagId], references: [tags.id] }),
 }));
