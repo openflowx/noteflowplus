@@ -43,12 +43,13 @@ export function useFlows() {
             if (!result.success) {
                 // rollback
                 setFlows(prev => prev.filter(f => f.id !== tempFlow.id));
-                setError(result.message || "Failed to create flow");
+                //setError(result.message || "Failed to create flow");
             } else {
                 await fetchFlows(); // sync with server
             }
 
             setIsSubmitting(false);
+            return result;
         },
         [fetchFlows]
     );

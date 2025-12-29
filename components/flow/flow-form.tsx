@@ -11,7 +11,10 @@ import { flowSchema, type FlowFormValues, type FlowInsertValues } from "@/schema
 import { toast } from "sonner";
 
 interface CreateFlowFormProps {
-    onSubmit: (values: FlowInsertValues) => Promise<void>;
+    onSubmit: (values: FlowInsertValues) => Promise<{
+        success: boolean;
+        message?: string;
+    }>;
 }
 
 export function CreateFlowForm({ onSubmit }: CreateFlowFormProps) {
@@ -31,15 +34,18 @@ export function CreateFlowForm({ onSubmit }: CreateFlowFormProps) {
 
 
     const onFormSubmit = async (data: FlowInsertValues) => {
-        try {
-            await onSubmit(data);
-            reset();
-            toast.success("Flow created successfully!");
-        } catch (error) {
-            toast.error("Failed to create flow. Please try again.");
-            console.error(error);
+        const result = await onSubmit(data);
+
+        if (!result || !result.success) {
+            toast.error(result?.message ?? "Something went wrong");
+            return;
         }
+
+
+        reset();
+        toast.success("Flow created successfully!");
     };
+
 
     return (
         <form onSubmit={handleSubmit(onFormSubmit)} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-6">
