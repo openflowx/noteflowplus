@@ -1,6 +1,7 @@
 import { db } from './index';
-import { flows } from './schema';
+import { flows, tags, flowTags } from './schema';
 import 'dotenv/config';
+import { eq } from 'drizzle-orm';
 
 async function seed() {
     console.log('🌱 Seeding database...');
@@ -29,7 +30,35 @@ async function seed() {
     ];
 
     try {
-        await db.insert(flows).values(seedFlows);
+        await db.transaction(async (tx) => {
+            for (const { tags: tagNames, ...flowData } of seedFlows) {
+                // 1. Insert flow
+                const [newFlow] = await tx.insert(flows).values(flowData).returning({ id: flows.id });
+
+                // 2. Handle tags
+                for (const tagName of tagNames) {
+                    // Check if tag exists
+                    let tag = await tx.query.tags.findFirst({
+                        where: eq(tags.name, tagName),
+                    });
+
+                    if (!tag) {
+                        // Insert new tag
+                        const [insertedTag] = await tx.insert(tags)
+                            .values({ name: tagName })
+                            .returning();
+                        tag = insertedTag;
+                    }
+
+                    // 3. Link tag to flow in flowTags junction table
+                    await tx.insert(flowTags).values({
+                        flowId: newFlow.id,
+                        tagId: tag.id,
+                    }).onConflictDoNothing();
+                }
+            }
+        });
+
         console.log('✅ Seeding completed successfully!');
         process.exit(0);
     } catch (error) {
