@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, uuid, integer, date, primaryKey, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid, integer, date, primaryKey, jsonb, index } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
 // FLOWS 
@@ -9,7 +9,9 @@ export const flows = pgTable("flows", {
     description: text("description"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
+}, (table) => [
+    index("flows_user_id_idx").on(table.userId),
+]);
 
 // TAGS 
 export const tags = pgTable("tags", {
@@ -33,7 +35,9 @@ export const notes = pgTable("notes", {
     content: text("content"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
+}, (table) => [
+    index("notes_flow_id_idx").on(table.flowId),
+]);
 
 // AI QUESTIONS 
 export const aiQuestions = pgTable("ai_questions", {
@@ -42,7 +46,9 @@ export const aiQuestions = pgTable("ai_questions", {
     question: text("question").notNull(),
     answer: text("answer").notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
-});
+}, (table) => [
+    index("ai_questions_flow_id_idx").on(table.flowId),
+]);
 
 // QUIZZES 
 export const quizzes = pgTable("quizzes", {
@@ -51,7 +57,9 @@ export const quizzes = pgTable("quizzes", {
     title: text("title").notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
+}, (table) => [
+    index("quizzes_flow_id_idx").on(table.flowId),
+]);
 
 // QUIZ QUESTIONS 
 export const quizQuestions = pgTable("quiz_questions", {
@@ -60,7 +68,9 @@ export const quizQuestions = pgTable("quiz_questions", {
     question: text("question").notNull(),
     options: jsonb("options").notNull(),
     correctOption: text("correct_option").notNull(),
-});
+}, (table) => [
+    index("quiz_questions_quiz_id_idx").on(table.quizId),
+]);
 
 // QUIZ ATTEMPTS 
 export const quizAttempts = pgTable("quiz_attempts", {
@@ -70,7 +80,9 @@ export const quizAttempts = pgTable("quiz_attempts", {
     score: integer("score").notNull(),
     durationSeconds: integer("duration_seconds").notNull(),
     attemptedAt: timestamp("attempted_at").defaultNow().notNull(),
-});
+}, (table) => [
+    index("quiz_attempts_quiz_id_idx").on(table.quizId),
+]);
 
 // DAILY ACTIVITY 
 export const dailyActivity = pgTable("daily_activity", {
@@ -89,7 +101,9 @@ export const events = pgTable("events", {
     startDatetime: timestamp("start_datetime").notNull(),
     endDatetime: timestamp("end_datetime").notNull(),
     description: text("description"),
-});
+}, (table) => [
+    index("events_flow_id_idx").on(table.flowId),
+]);
 
 // RELATIONS 
 export const flowsRelations = relations(flows, ({ many }) => ({
