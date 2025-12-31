@@ -1,7 +1,9 @@
 export interface Flow {
     id: string;
-    name: string;
+    userId: string;
+    title: string;
     description?: string;
     tags: string[];
-    createdAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
