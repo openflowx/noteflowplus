@@ -24,44 +24,49 @@ export const createFlowAction = async (values: FlowInsertValues) => {
 
     const { title, description, tags: tagNames } = parsed.data;
 
-    await db.transaction(async (tx) => {
-        // Insert flow
-        const [flow] = await tx
-            .insert(flows)
-            .values({
-                userId,
-                title,
-                description,
-            })
-            .returning({ id: flows.id });
+    try {
+        await db.transaction(async (tx) => {
+            // Insert flow
+            const [flow] = await tx
+                .insert(flows)
+                .values({
+                    userId,
+                    title,
+                    description,
+                })
+                .returning({ id: flows.id });
 
-        // Insert tags if not exists
-        const insertedTags = await Promise.all(
-            tagNames.map(async (name) => {
-                const [existing] = await tx
-                    .select()
-                    .from(tags)
-                    .where(eq(tags.name, name));
+            // Insert tags if not exists
+            const insertedTags = await Promise.all(
+                tagNames.map(async (name) => {
+                    const [existing] = await tx
+                        .select()
+                        .from(tags)
+                        .where(eq(tags.name, name));
 
-                if (existing) return existing;
+                    if (existing) return existing;
 
-                const [created] = await tx
-                    .insert(tags)
-                    .values({ name })
-                    .returning();
+                    const [created] = await tx
+                        .insert(tags)
+                        .values({ name })
+                        .returning();
 
-                return created;
-            })
-        );
+                    return created;
+                })
+            );
 
-        // Insert into flow_tags
-        await tx.insert(flowTags).values(
-            insertedTags.map((tag) => ({
-                flowId: flow.id,
-                tagId: tag.id,
-            }))
-        );
-    });
+            // Insert into flow_tags
+            await tx.insert(flowTags).values(
+                insertedTags.map((tag) => ({
+                    flowId: flow.id,
+                    tagId: tag.id,
+                }))
+            );
+        });
+    } catch (err) {
+        console.error("Failed to create flow:", err);
+        return { success: false, message: "Failed to create flow" };
+    }
 
     revalidatePath("/flows");
 

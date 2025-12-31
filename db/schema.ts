@@ -122,8 +122,7 @@ export const quizAttemptsRelations = relations(quizAttempts, ({ one }) => ({
     quiz: one(quizzes, { fields: [quizAttempts.quizId], references: [quizzes.id] }),
 }));
 
-export const dailyActivityRelations = relations(dailyActivity, ({ }) => ({}));
-
+export const dailyActivityRelations = relations(dailyActivity, () => ({}));
 export const eventsRelations = relations(events, ({ one }) => ({
     flow: one(flows, { fields: [events.flowId], references: [flows.id] }),
 }));

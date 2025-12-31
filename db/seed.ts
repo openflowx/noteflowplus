@@ -31,10 +31,10 @@ async function seed() {
     try {
         await db.insert(flows).values(seedFlows);
         console.log('✅ Seeding completed successfully!');
+        process.exit(0);
     } catch (error) {
         console.error('❌ Seeding failed:', error);
-    } finally {
-        process.exit(0);
+        process.exit(1);
     }
 }
 
