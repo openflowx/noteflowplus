@@ -11,7 +11,7 @@ export default function NotesPage() {
 
 
     return (
-        <div className="container h-full space-y-6">
+        <div className="container h-full space-y-8">
             <header>
                 <h1 className="text-2xl font-bold">Notes</h1>
                 <p className="text-muted-foreground">Capture your thoughts.</p>

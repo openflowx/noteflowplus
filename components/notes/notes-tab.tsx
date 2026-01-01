@@ -23,12 +23,12 @@ export function NotesTabs({ notes, activeNote, onSelect, onCreate }: Props) {
             </TabsList>
 
 
-            <TabsContent value="list">
+            <TabsContent value="list" className="mt-8">
                 <NoteList notes={notes} onSelect={onSelect} />
             </TabsContent>
 
 
-            <TabsContent value="edit">
+            <TabsContent value="edit" className="mt-8">
                 <NotesEditorPanel note={activeNote} />
             </TabsContent>
         </Tabs>

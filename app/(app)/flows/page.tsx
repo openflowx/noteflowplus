@@ -9,7 +9,7 @@ import { FlowSkeleton } from "@/components/flow/flow-skeleton";
 import { useFlows } from "@/hooks/use-flows";
 
 export default function FlowsPage() {
-    const { isLoaded, isSignedIn } = useUser();
+    const { isLoaded } = useUser();
 
     const { flows, fetchFlows, createFlow, isLoading, error } = useFlows();
     const [selectedFlowId, setSelectedFlowId] = useState<string | null>(null);
