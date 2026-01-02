@@ -35,7 +35,7 @@ export function NoteCard({ note, onClick }: Props) {
       </div>
 
       <p className="mt-3 text-sm text-slate-600 line-clamp-3">
-        {note.content.trim() || "Add more context to this note."}
+        {note.content?.trim() || "Add more context to this note."}
       </p>
     </Card>
   )

@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { EditorToolbar } from './editor-toolbar'
@@ -37,6 +38,13 @@ const NoteEditor = ({ content = '', onChange }: NoteEditorProps) => {
         },
         immediatelyRender: false,
     })
+
+    // Update content when it changes externally (e.g. switching notes)
+    useEffect(() => {
+        if (editor && content !== editor.getHTML()) {
+            editor.commands.setContent(content)
+        }
+    }, [content, editor])
 
     if (!editor) {
         return null
