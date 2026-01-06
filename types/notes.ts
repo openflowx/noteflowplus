@@ -1,7 +1,8 @@
 export interface Note {
-    id: string
-    title: string
-    content: string
-    tags: string[]
-    updatedAt: Date
+    id: string;
+    flowId: string;
+    title: string;
+    content: string | null;
+    createdAt: Date;
+    updatedAt: Date;
 }
