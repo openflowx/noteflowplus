@@ -4,6 +4,8 @@ import { useState, useEffect } from "react"
 import { NotesTabs } from "@/components/notes/notes-tab"
 import { useNotes } from "@/hooks/use-notes"
 import { useFlows } from "@/hooks/use-flows"
+import { useFlowStore } from "@/store/use-flow-store"
+import { updateSelectedFlow } from "@/app/actions/preferences"
 import {
     Select,
     SelectContent,
@@ -13,10 +15,11 @@ import {
 } from "@/components/ui/select"
 import { AlertCircle, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { toast } from "sonner"
 
 export default function NotesPage() {
     const { flows, fetchFlows } = useFlows()
-    const [selectedFlowId, setSelectedFlowId] = useState<string | null>(null)
+    const { selectedFlowId, setFlowId } = useFlowStore()
 
     const {
         notes,
@@ -27,6 +30,16 @@ export default function NotesPage() {
         isSaving,
         isLoading
     } = useNotes(selectedFlowId)
+
+    const handleFlowChange = async (id: string) => {
+        const newId = id === "none" ? null : id;
+        setFlowId(newId);
+        try {
+            await updateSelectedFlow(newId);
+        } catch (err) {
+            console.error("Failed to sync flow choice", err);
+        }
+    }
 
     useEffect(() => {
         fetchFlows()
@@ -42,13 +55,14 @@ export default function NotesPage() {
 
                 <div className="flex items-center gap-3">
                     <Select
-                        value={selectedFlowId || ""}
-                        onValueChange={(val: string) => setSelectedFlowId(val)}
+                        value={selectedFlowId || "none"}
+                        onValueChange={handleFlowChange}
                     >
                         <SelectTrigger className="w-50 bg-white">
                             <SelectValue placeholder="Select a Flow" />
                         </SelectTrigger>
                         <SelectContent>
+                            <SelectItem value="none">No Flow Selected</SelectItem>
                             {flows.map((flow) => (
                                 <SelectItem key={flow.id} value={flow.id}>
                                     {flow.title}
