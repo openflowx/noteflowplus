@@ -50,7 +50,7 @@ export default function NotesPage() {
             <div className="absolute top-[-10%] right-[-10%] w-[45%] h-[45%] bg-sky-100/40 blur-[130px] rounded-full -z-10 animate-pulse" />
             <div className="absolute bottom-[5%] left-[-5%] w-[35%] h-[35%] bg-blue-100/30 blur-[110px] rounded-full -z-10" />
 
-            <div className="container h-full max-w-6xl py-10 space-y-12 relative">
+            <div className="container h-full max-w-6xl space-y-12 relative">
                 <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-slate-200/60 pb-10">
                     <div className="space-y-3">
                         <div className="inline-flex items-center px-3 py-1 rounded-full bg-sky-100 text-sky-600 text-[10px] font-bold uppercase tracking-wider">

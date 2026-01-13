@@ -9,8 +9,7 @@ import { FlowSkeleton } from "@/components/flow/flow-skeleton";
 import { useFlows } from "@/hooks/use-flows";
 import { useFlowStore } from "@/store/use-flow-store";
 import { updateSelectedFlow } from "@/app/actions/preferences";
-import { AlertCircle, Plus, Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import {  Zap } from "lucide-react";
 import { toast } from "sonner";
 
 export default function FlowsPage() {
@@ -38,12 +37,12 @@ export default function FlowsPage() {
 
 
     return (
-        <div className="relative min-h-[calc(100vh-4rem)] p-6 lg:p-10 overflow-hidden">
+        <div className="relative min-h-[calc(100vh-4rem)] overflow-hidden">
             {/* Background Decorations */}
             <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-sky-200/30 blur-[120px] rounded-full -z-10 animate-pulse" />
             <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[30%] bg-blue-200/20 blur-[100px] rounded-full -z-10" />
 
-            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
                 <div className="lg:col-span-12 xl:col-span-8 flex flex-col h-full space-y-10">
                     <div className="space-y-3">
                         <div className="inline-flex items-center px-3 py-1 rounded-full bg-sky-100 text-sky-600 text-xs font-bold uppercase tracking-wider mb-2">
@@ -63,15 +62,15 @@ export default function FlowsPage() {
 
                     <div className="space-y-6 pt-4 pb-12">
                         <div className="flex items-center justify-between px-2">
-                            <h2 className="text-2xl font-bold text-slate-900">Active Sequences</h2>
+                            <h2 className="text-2xl font-bold text-slate-900">Your Flows</h2>
                             <div className="flex items-center gap-2 text-sm font-semibold text-sky-600 bg-sky-50 px-4 py-2 rounded-2xl border border-sky-100">
                                 {flows.length} <span className="text-slate-400 font-normal">Active</span>
                             </div>
                         </div>
 
                         {isLoading ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {[1, 2, 3, 4].map(i => <FlowSkeleton key={i} />)}
+                            <div className="grid grid-cols-1  gap-4">
+                                {[1, 2].map(i => <FlowSkeleton key={i} />)}
                             </div>
                         ) : error ? (
                             <div className="p-6 bg-red-50/50 backdrop-blur-md rounded-3xl text-red-600 border border-red-100">{error}</div>
@@ -84,7 +83,7 @@ export default function FlowsPage() {
                                 <p className="text-slate-500 max-w-xs mx-auto">Start your journey by creating your first knowledge flow above.</p>
                             </div>
                         ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 gap-6 mx-6">
                                 {flows.map(flow => (
                                     <FlowCard
                                         key={flow.id}

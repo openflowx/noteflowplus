@@ -14,10 +14,10 @@ export function FlowCard({ flow, selected = false, onClick }: FlowCardProps) {
         <div
             onClick={onClick}
             className={cn(
-                "group relative cursor-pointer rounded-[2rem] p-6 transition-all duration-300 border-2 overflow-hidden",
+                "group relative cursor-pointer rounded-[1.8rem] p-6 transition-all duration-300 border-2 overflow-hidden shadow-lg shadow-sky-50",
                 selected
-                    ? "bg-white border-sky-500 shadow-2xl shadow-sky-100 scale-[1.02]"
-                    : "bg-white/60 backdrop-blur-md border-transparent hover:border-sky-200 hover:bg-white hover:shadow-xl hover:shadow-sky-100/50"
+                    ? "bg-white border-sky-500 shadow-sm shadow-sky-100 scale-[1.01]"
+                    : "bg-white/60 backdrop-blur-md border-transparent hover:border-sky-200 hover:bg-white hover:shadow-lg hover:shadow-sky-100/50 "
             )}
         >
             {/* Active Indicator */}
