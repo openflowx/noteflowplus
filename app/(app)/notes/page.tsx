@@ -50,13 +50,13 @@ export default function NotesPage() {
             <div className="absolute right-[-10%] top-[-10%] h-[45%] w-[60%] animate-pulse rounded-full bg-sky-100/40 blur-[80px] -z-10 md:blur-[130px] lg:w-[45%]" />
             <div className="absolute bottom-[5%] left-[-5%] h-[35%] w-[50%] rounded-full bg-blue-100/30 blur-[70px] -z-10 md:blur-[110px] lg:w-[35%]" />
 
-            <div className="relative mx-auto max-w-6xl space-y-8 px-4 py-8 md:space-y-12 md:px-6 md:py-12 lg:px-10">
+            <div className="relative mx-auto  space-y-8 px-4 py-8 md:space-y-12 md:px-6 md:py-12 lg:px-10">
                 <header className="flex flex-col gap-6 border-b border-slate-200/60 pb-8 md:flex-row md:items-end md:justify-between md:gap-8 md:pb-10">
                     <div className="space-y-2 md:space-y-3">
                         <div className="inline-flex items-center rounded-full bg-sky-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-sky-600">
                             Workstream
                         </div>
-                        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl lg:text-5xl">
+                        <h1 className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl lg:text-4xl">
                             Notes <span className="text-sky-500">&</span> Insights
                         </h1>
                         <p className="max-w-md text-base leading-relaxed text-slate-500 md:text-lg">
@@ -70,7 +70,7 @@ export default function NotesPage() {
                                 value={selectedFlowId || "none"}
                                 onValueChange={handleFlowChange}
                             >
-                                <SelectTrigger className="h-11 w-full rounded-xl border-none bg-white/80 px-4 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:bg-white hover:shadow-md sm:h-12 sm:w-64 sm:rounded-2xl sm:px-6 sm:text-base">
+                                <SelectTrigger className="h-11! w-full rounded-xl border-none bg-white/80 px-4 text-sm font-semibold text-slate-700 shadow-sm transition-all hover:bg-white hover:shadow-md sm:h-12! sm:w-64 sm:rounded-2xl sm:px-6 sm:text-base">
                                     <SelectValue placeholder="Select a Flow" />
                                 </SelectTrigger>
                                 <SelectContent className="rounded-xl border-none p-2 shadow-2xl sm:rounded-2xl">
@@ -87,7 +87,7 @@ export default function NotesPage() {
                         {selectedFlowId && (
                             <Button
                                 onClick={createNote}
-                                className="flex h-11 items-center justify-center gap-2 rounded-xl bg-sky-500 px-6 text-sm font-bold text-white shadow-lg shadow-sky-200 transition-all hover:scale-[1.02] hover:bg-sky-600 active:scale-[0.98] sm:h-12 sm:rounded-2xl sm:px-8 sm:text-base"
+                                className="h-11! flex items-center justify-center gap-2 rounded-xl bg-sky-500 px-6 text-sm font-bold text-white transition-all hover:scale-[1.02] hover:bg-sky-600 active:scale-[0.98] sm:h-12! sm:rounded-2xl sm:px-8 sm:text-base"
                             >
                                 <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
                                 New Note

@@ -42,13 +42,13 @@ export default function FlowsPage() {
             <div className="absolute left-[-10%] top-[-10%] h-[40%] w-[60%] animate-pulse rounded-full bg-sky-200/30 blur-[80px] -z-10 md:blur-[120px] lg:w-[40%]" />
             <div className="absolute bottom-[10%] right-[-5%] h-[30%] w-[50%] rounded-full bg-blue-200/20 blur-[70px] -z-10 md:blur-[100px] lg:w-[30%]" />
 
-            <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 py-8 md:px-6 md:py-12 lg:grid-cols-12 lg:gap-12 lg:px-10">
+            <div className="mx-auto grid  grid-cols-1 gap-8 px-4 py-8 md:px-6 md:py-12 lg:grid-cols-12 lg:gap-12 lg:px-10">
                 <div className="flex h-full flex-col space-y-8 lg:col-span-12 xl:col-span-8 xl:space-y-10">
                     <div className="space-y-3">
                         <div className="mb-1 inline-flex items-center rounded-full bg-sky-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-sky-600 md:mb-2 md:text-xs">
                             Dashboard
                         </div>
-                        <h1 className="text-3xl font-bold tracking-tight text-slate-900 md:text-4xl lg:text-5xl">
+                        <h1 className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl lg:text-4xl">
                             Knowledge <span className="text-sky-500">Flows</span>
                         </h1>
                         <p className="max-w-2xl text-base leading-relaxed text-slate-500 md:text-lg">

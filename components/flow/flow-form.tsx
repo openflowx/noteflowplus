@@ -107,7 +107,7 @@ export function CreateFlowForm({ onSubmit }: CreateFlowFormProps) {
                 type="submit"
                 size="lg"
                 disabled={isSubmitting}
-                className="flex h-11 w-full items-center justify-center gap-3 rounded-full border-0 bg-sky-500 text-sm font-bold text-white transition-all hover:scale-[1.02] hover:bg-sky-600 active:scale-[0.98] md:h-12 md:text-base"
+                className="flex h-11! w-full items-center justify-center gap-3 rounded-full border-0 bg-sky-500 text-sm font-bold text-white transition-all hover:scale-[1.02] hover:bg-sky-600 active:scale-[0.98] md:h-12! md:text-base"
             >
                 {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin md:h-5 md:w-5" /> : <Plus className="h-4 w-4 md:h-5 md:w-5" />}
                 {isSubmitting ? "Orchestrating..." : "Initiate Flow"}
