@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Flow } from "@/types/flow";
 import { cn } from "@/lib/utils";
+import { Zap } from "lucide-react";
 
 interface FlowCardProps {
     flow: Flow;
@@ -13,24 +14,56 @@ export function FlowCard({ flow, selected = false, onClick }: FlowCardProps) {
         <div
             onClick={onClick}
             className={cn(
-                "cursor-pointer rounded-3xl p-5 transition-all duration-200 shadow-sm hover:shadow-md",
-                selected ? "bg-sky-500 text-white shadow-lg" : "bg-white text-gray-900"
+                "group relative cursor-pointer rounded-[2rem] p-6 transition-all duration-300 border-2 overflow-hidden",
+                selected
+                    ? "bg-white border-sky-500 shadow-2xl shadow-sky-100 scale-[1.02]"
+                    : "bg-white/60 backdrop-blur-md border-transparent hover:border-sky-200 hover:bg-white hover:shadow-xl hover:shadow-sky-100/50"
             )}
         >
-            <div className="flex flex-col gap-2">
-                <div className="flex justify-between items-start">
-                    <h3 className="text-lg font-semibold tracking-tight">{flow.title}</h3>
-                    <span className={cn("text-xs font-medium uppercase tracking-wider", selected ? "text-white/80" : "text-gray-400")}>
-                        {flow.createdAt?.toLocaleDateString(undefined, { month: "short", day: "numeric" })}
-                    </span>
+            {/* Active Indicator */}
+            {selected && (
+                <div className="absolute top-0 right-0 p-3">
+                    <div className="bg-sky-500 rounded-full p-1 shadow-lg shadow-sky-200">
+                        <Zap className="h-3 w-3 text-white fill-white" />
+                    </div>
+                </div>
+            )}
+
+            <div className="flex flex-col gap-4">
+                <div className="space-y-1">
+                    <h3 className={cn(
+                        "text-xl font-bold tracking-tight transition-colors",
+                        selected ? "text-sky-600" : "text-slate-900 group-hover:text-sky-600"
+                    )}>
+                        {flow.title}
+                    </h3>
+                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                        <span>Created</span>
+                        <div className="h-1 w-1 rounded-full bg-slate-300" />
+                        <span>{flow.createdAt?.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}</span>
+                    </div>
                 </div>
 
-                {flow.description && <p className={cn("text-sm line-clamp-2", selected ? "text-white/90" : "text-gray-600")}>{flow.description}</p>}
+                {flow.description && (
+                    <p className={cn(
+                        "text-sm leading-relaxed line-clamp-2",
+                        selected ? "text-slate-600" : "text-slate-500"
+                    )}>
+                        {flow.description}
+                    </p>
+                )}
 
                 {flow.tags?.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mt-2">
+                    <div className="flex flex-wrap gap-2">
                         {flow.tags.map(tag => (
-                            <Badge key={tag} variant="secondary" className={cn("border-transparent font-normal", selected ? "bg-white/20 text-white" : "bg-gray-100 text-gray-700")}>
+                            <Badge
+                                key={tag}
+                                variant="secondary"
+                                className={cn(
+                                    "px-3 py-0.5 rounded-full text-[10px] font-bold uppercase border-none",
+                                    selected ? "bg-sky-100 text-sky-700" : "bg-slate-100 text-slate-600 group-hover:bg-sky-50 group-hover:text-sky-600"
+                                )}
+                            >
                                 {tag}
                             </Badge>
                         ))}

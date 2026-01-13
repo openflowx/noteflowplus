@@ -9,6 +9,8 @@ import { FlowSkeleton } from "@/components/flow/flow-skeleton";
 import { useFlows } from "@/hooks/use-flows";
 import { useFlowStore } from "@/store/use-flow-store";
 import { updateSelectedFlow } from "@/app/actions/preferences";
+import { AlertCircle, Plus, Zap } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 export default function FlowsPage() {
@@ -36,48 +38,71 @@ export default function FlowsPage() {
 
 
     return (
-        <div className="max-w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:h-[calc(100vh-6rem)]">
-            <div className="lg:col-span-8 flex flex-col h-full space-y-8 overflow-y-auto pr-2 no-scrollbar">
-                <div className="space-y-2">
-                    <h1 className="text-2xl font-bold tracking-tight text-gray-900">Flows Management</h1>
-                    <p className="text-gray-500">Create and organize your knowledge flows.</p>
-                </div>
+        <div className="relative min-h-[calc(100vh-4rem)] p-6 lg:p-10 overflow-hidden">
+            {/* Background Decorations */}
+            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-sky-200/30 blur-[120px] rounded-full -z-10 animate-pulse" />
+            <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[30%] bg-blue-200/20 blur-[100px] rounded-full -z-10" />
 
-                <CreateFlowForm onSubmit={createFlow} />
-
-                <div className="space-y-4 pt-4 pb-12">
-                    <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-bold text-gray-900">Your Flows</h2>
-                        <span className="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">{flows.length} Flows</span>
+            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <div className="lg:col-span-12 xl:col-span-8 flex flex-col h-full space-y-10">
+                    <div className="space-y-3">
+                        <div className="inline-flex items-center px-3 py-1 rounded-full bg-sky-100 text-sky-600 text-xs font-bold uppercase tracking-wider mb-2">
+                            Dashboard
+                        </div>
+                        <h1 className="text-4xl font-bold tracking-tight text-slate-900 lg:text-5xl">
+                            Knowledge <span className="text-sky-500">Flows</span>
+                        </h1>
+                        <p className="text-lg text-slate-500 max-w-2xl">
+                            Design and organize your intellectual workstreams with precision and ease.
+                        </p>
                     </div>
 
-                    {isLoading ? (
-                        <div className="flex flex-col gap-3">
-                            {[1, 2, 3].map(i => <FlowSkeleton key={i} />)}
-                        </div>
-                    ) : error ? (
-                        <div className="p-6 bg-red-50 rounded-lg text-red-600">{error}</div>
-                    ) : flows.length === 0 ? (
-                        <div className="text-center py-12 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
-                            <p className="text-gray-500">No flows yet. Create your first one above!</p>
-                        </div>
-                    ) : (
-                        <div className="flex flex-col gap-3">
-                            {flows.map(flow => (
-                                <FlowCard
-                                    key={flow.id}
-                                    flow={flow}
-                                    selected={flow.id === selectedFlowId}
-                                    onClick={() => handleSelectFlow(flow.id)}
-                                />
-                            ))}
-                        </div>
-                    )}
-                </div>
-            </div>
+                    <div className="bg-white/40 backdrop-blur-xl rounded-[2.5rem] p-1 border border-white/60 shadow-2xl shadow-sky-200/20">
+                        <CreateFlowForm onSubmit={createFlow} />
+                    </div>
 
-            <div className="hidden lg:col-span-4 lg:block h-full sticky top-6">
-                <FlowHero />
+                    <div className="space-y-6 pt-4 pb-12">
+                        <div className="flex items-center justify-between px-2">
+                            <h2 className="text-2xl font-bold text-slate-900">Active Sequences</h2>
+                            <div className="flex items-center gap-2 text-sm font-semibold text-sky-600 bg-sky-50 px-4 py-2 rounded-2xl border border-sky-100">
+                                {flows.length} <span className="text-slate-400 font-normal">Active</span>
+                            </div>
+                        </div>
+
+                        {isLoading ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {[1, 2, 3, 4].map(i => <FlowSkeleton key={i} />)}
+                            </div>
+                        ) : error ? (
+                            <div className="p-6 bg-red-50/50 backdrop-blur-md rounded-3xl text-red-600 border border-red-100">{error}</div>
+                        ) : flows.length === 0 ? (
+                            <div className="text-center py-20 bg-white/40 backdrop-blur-md rounded-[3rem] border-2 border-dashed border-slate-200">
+                                <div className="bg-white w-16 h-16 rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-4">
+                                    <Zap className="text-sky-400 h-8 w-8" />
+                                </div>
+                                <h3 className="text-xl font-bold text-slate-900 mb-2">No Flows Found</h3>
+                                <p className="text-slate-500 max-w-xs mx-auto">Start your journey by creating your first knowledge flow above.</p>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {flows.map(flow => (
+                                    <FlowCard
+                                        key={flow.id}
+                                        flow={flow}
+                                        selected={flow.id === selectedFlowId}
+                                        onClick={() => handleSelectFlow(flow.id)}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                <div className="hidden xl:col-span-4 xl:block h-full">
+                    <div className="sticky top-10">
+                        <FlowHero />
+                    </div>
+                </div>
             </div>
         </div>
     );

@@ -45,60 +45,91 @@ export default function NotesPage() {
     }, [fetchFlows])
 
     return (
-        <div className="container h-full max-w-5xl py-8 space-y-8">
-            <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Notes</h1>
-                    <p className="text-muted-foreground">Organize your thoughts within your workflows.</p>
-                </div>
+        <div className="relative min-h-[calc(100vh-4rem)] overflow-hidden">
+            {/* Background Decorations */}
+            <div className="absolute top-[-10%] right-[-10%] w-[45%] h-[45%] bg-sky-100/40 blur-[130px] rounded-full -z-10 animate-pulse" />
+            <div className="absolute bottom-[5%] left-[-5%] w-[35%] h-[35%] bg-blue-100/30 blur-[110px] rounded-full -z-10" />
 
-                <div className="flex items-center gap-3">
-                    <Select
-                        value={selectedFlowId || "none"}
-                        onValueChange={handleFlowChange}
-                    >
-                        <SelectTrigger className="w-50 bg-white">
-                            <SelectValue placeholder="Select a Flow" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="none">No Flow Selected</SelectItem>
-                            {flows.map((flow) => (
-                                <SelectItem key={flow.id} value={flow.id}>
-                                    {flow.title}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-
-                    {selectedFlowId && (
-                        <Button onClick={createNote} className="gap-2">
-                            <Plus className="h-4 w-4" />
-                            New Note
-                        </Button>
-                    )}
-                </div>
-            </header>
-
-            {!selectedFlowId ? (
-                <div className="flex flex-col items-center justify-center py-20 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200 text-center px-4">
-                    <div className="bg-white p-4 rounded-2xl shadow-sm mb-4">
-                        <AlertCircle className="h-10 w-10 text-orange-500" />
+            <div className="container h-full max-w-6xl py-10 space-y-12 relative">
+                <header className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-slate-200/60 pb-10">
+                    <div className="space-y-3">
+                        <div className="inline-flex items-center px-3 py-1 rounded-full bg-sky-100 text-sky-600 text-[10px] font-bold uppercase tracking-wider">
+                            Workstream
+                        </div>
+                        <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 lg:text-5xl">
+                            Notes <span className="text-sky-500">&</span> Insights
+                        </h1>
+                        <p className="text-lg text-slate-500 max-w-md">
+                            Capture thoughts and iterate on your ideas within specific flows.
+                        </p>
                     </div>
-                    <h2 className="text-xl font-semibold mb-2">No Flow Selected</h2>
-                    <p className="text-muted-foreground max-w-xs mx-auto mb-6">
-                        Notes must be associated with a flow. Please select a flow from the dropdown above to view or create notes.
-                    </p>
-                </div>
-            ) : (
-                <NotesTabs
-                    notes={notes}
-                    activeNote={activeNote}
-                    onSelect={selectNote}
-                    onUpdate={updateActiveNoteLocally}
-                    isSaving={isSaving}
-                    isLoading={isLoading}
-                />
-            )}
+
+                    <div className="flex flex-col sm:flex-row items-center gap-4 bg-white/40 backdrop-blur-xl p-2 rounded-[2rem] border border-white/60 shadow-xl shadow-sky-100/20">
+                        <div className="relative group">
+                            <Select
+                                value={selectedFlowId || "none"}
+                                onValueChange={handleFlowChange}
+                            >
+                                <SelectTrigger className="w-64 bg-white/80 border-none shadow-sm rounded-2xl h-12 px-6 font-semibold text-slate-700 transition-all group-hover:bg-white group-hover:shadow-md">
+                                    <SelectValue placeholder="Select a Flow" />
+                                </SelectTrigger>
+                                <SelectContent className="rounded-2xl border-none shadow-2xl p-2">
+                                    <SelectItem value="none" className="rounded-xl">No Flow Selected</SelectItem>
+                                    {flows.map((flow) => (
+                                        <SelectItem key={flow.id} value={flow.id} className="rounded-xl">
+                                            {flow.title}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        {selectedFlowId && (
+                            <Button
+                                onClick={createNote}
+                                className="h-12 px-8 rounded-2xl bg-sky-500 hover:bg-sky-600 text-white font-bold shadow-lg shadow-sky-200 transition-all hover:scale-[1.02] active:scale-[0.98] gap-2"
+                            >
+                                <Plus className="h-5 w-5" />
+                                New Note
+                            </Button>
+                        )}
+                    </div>
+                </header>
+
+                <main className="min-h-125">
+                    {!selectedFlowId ? (
+                        <div className="flex flex-col items-center justify-center py-32 bg-white/40 backdrop-blur-md rounded-[3rem] border border-white/80 shadow-2xl shadow-sky-100/20 text-center px-6 relative overflow-hidden group">
+                            <div className="absolute inset-0 bg-linear-to-br from-sky-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+                            <div className="relative">
+                                <div className="bg-white p-6 rounded-[2rem] shadow-xl shadow-sky-100/50 mb-8 inline-block transform transition group-hover:rotate-6 duration-500">
+                                    <AlertCircle className="h-12 w-12 text-sky-400" />
+                                </div>
+                                <h2 className="text-3xl font-bold text-slate-900 mb-4 tracking-tight">Select a Workspace</h2>
+                                <p className="text-slate-500 max-w-sm mx-auto mb-10 text-lg leading-relaxed">
+                                    To start creating magic, please pick a flow from the dropdown above. Your notes need a home!
+                                </p>
+                                <div className="flex justify-center">
+                                    <div className="w-24 h-1.5 rounded-full bg-sky-100" />
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-white/40 backdrop-blur-xl rounded-[3rem] p-2 border border-white/60 shadow-2xl shadow-sky-100/10 min-h-150">
+                            <div className="bg-white rounded-[2.5rem] h-full overflow-hidden p-6 lg:p-10">
+                                <NotesTabs
+                                    notes={notes}
+                                    activeNote={activeNote}
+                                    onSelect={selectNote}
+                                    onUpdate={updateActiveNoteLocally}
+                                    isSaving={isSaving}
+                                    isLoading={isLoading}
+                                />
+                            </div>
+                        </div>
+                    )}
+                </main>
+            </div>
         </div>
     )
 }
