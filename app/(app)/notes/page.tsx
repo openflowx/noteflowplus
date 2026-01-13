@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/select"
 import { AlertCircle, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { toast } from "sonner"
 
 export default function NotesPage() {
     const { flows, fetchFlows } = useFlows()

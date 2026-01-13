@@ -16,10 +16,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
-import clsx from "clsx";
+
 
 export function FlowSwitcher() {
-    const { selectedFlowId, setFlowId, isHydrated } = useFlowStore();
+    const { selectedFlowId, setFlowId } = useFlowStore();
     const [flows, setFlows] = useState<Flow[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
