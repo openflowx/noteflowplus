@@ -23,7 +23,17 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           {children}
-          <Toaster position="top-right" richColors />
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              style: {
+                background: 'var(--color-sky-500)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '1.25rem',
+              }
+            }}
+          />
         </body>
       </html>
     </ClerkProvider>
