@@ -98,7 +98,7 @@ export function FlowSwitcher() {
                             <div className="flex items-center gap-3 w-full">
                                 <div className="size-2 rounded-full bg-slate-200" />
                                 <span className="flex-1 text-sm">None (Global View)</span>
-                                {!selectedFlowId && <Check className="size-4 text-blue-600" />}
+                                {!selectedFlowId && <Check className="size-4 text-primary" />}
                             </div>
                         </DropdownMenuItem>
                         {flows.map((flow) => (
@@ -108,10 +108,10 @@ export function FlowSwitcher() {
                                 onClick={() => handleSelect(flow.id)}
                             >
                                 <div className="flex items-center gap-3 w-full">
-                                    <div className="size-2 rounded-full bg-blue-500" />
+                                    <div className="size-2 rounded-full bg-primary" />
                                     <span className="flex-1 text-sm truncate">{flow.title}</span>
                                     {selectedFlowId === flow.id && (
-                                        <Check className="size-4 text-blue-600" />
+                                        <Check className="size-4 text-primary" />
                                     )}
                                 </div>
                             </DropdownMenuItem>

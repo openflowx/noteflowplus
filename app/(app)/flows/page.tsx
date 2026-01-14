@@ -39,31 +39,31 @@ export default function FlowsPage() {
     return (
         <div className="relative min-h-[calc(100vh-4rem)] overflow-x-hidden">
             {/* Background Decorations */}
-            <div className="absolute left-[-10%] top-[-10%] h-[40%] w-[60%] animate-pulse rounded-full bg-sky-200/30 blur-[80px] -z-10 md:blur-[120px] lg:w-[40%]" />
-            <div className="absolute bottom-[10%] right-[-5%] h-[30%] w-[50%] rounded-full bg-blue-200/20 blur-[70px] -z-10 md:blur-[100px] lg:w-[30%]" />
+            <div className="absolute left-[-10%] top-[-10%] h-[40%] w-[60%] animate-pulse rounded-full bg-primary/10 blur-[80px] -z-10 md:blur-[120px] lg:w-[40%]" />
+            <div className="absolute bottom-[10%] right-[-5%] h-[30%] w-[50%] rounded-full bg-primary/5 blur-[70px] -z-10 md:blur-[100px] lg:w-[30%]" />
 
             <div className="mx-auto grid  grid-cols-1 gap-8 px-4 py-8 md:px-6 md:py-12 lg:grid-cols-12 lg:gap-12 lg:px-10">
                 <div className="flex h-full flex-col space-y-8 lg:col-span-12 xl:col-span-8 xl:space-y-10">
                     <div className="space-y-3">
-                        <div className="mb-1 inline-flex items-center rounded-full bg-sky-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-sky-600 md:mb-2 md:text-xs">
+                        <div className="mb-1 inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary md:mb-2 md:text-xs">
                             Dashboard
                         </div>
                         <h1 className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl lg:text-4xl">
-                            Knowledge <span className="text-sky-500">Flows</span>
+                            Knowledge <span className="text-primary">Flows</span>
                         </h1>
                         <p className="max-w-2xl text-base leading-relaxed text-slate-500 md:text-lg">
                             Design and organize your intellectual workstreams with precision and ease.
                         </p>
                     </div>
 
-                    <div className="rounded-[2rem] border border-white/60 bg-white/40 p-1 shadow-2xl shadow-sky-200/20 backdrop-blur-xl md:rounded-[2.5rem]">
+                    <div className="rounded-[2rem] border border-white/60 bg-white/40 p-1 shadow-2xl shadow-primary/5 backdrop-blur-xl md:rounded-[2.5rem]">
                         <CreateFlowForm onSubmit={createFlow} />
                     </div>
 
                     <div className="space-y-6 px-1 py-4 pb-12 md:px-2">
                         <div className="flex items-center justify-between">
                             <h2 className="text-xl font-bold text-slate-900 md:text-2xl">Your Flows</h2>
-                            <div className="flex items-center gap-2 rounded-2xl border border-sky-100 bg-sky-50 px-3 py-1.5 text-xs font-semibold text-sky-600 md:px-4 md:py-2 md:text-sm">
+                            <div className="flex items-center gap-2 rounded-2xl border border-primary/10 bg-primary/5 px-3 py-1.5 text-xs font-semibold text-primary md:px-4 md:py-2 md:text-sm">
                                 {flows.length} <span className="font-normal text-slate-400">Active</span>
                             </div>
                         </div>
@@ -77,7 +77,7 @@ export default function FlowsPage() {
                         ) : flows.length === 0 ? (
                             <div className="rounded-[2.5rem] border-2 border-dashed border-slate-200 bg-white/40 px-4 py-12 text-center backdrop-blur-md md:rounded-[3rem] md:py-20">
                                 <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-white shadow-sm md:h-16 md:w-16 md:rounded-2xl">
-                                    <Zap className="h-6 w-6 text-sky-400 md:h-8 md:w-8" />
+                                    <Zap className="h-6 w-6 text-primary/50 md:h-8 md:w-8" />
                                 </div>
                                 <h3 className="mb-2 text-lg font-bold text-slate-900 md:text-xl">No Flows Found</h3>
                                 <p className="mx-auto max-w-xs text-sm leading-relaxed text-slate-500 md:text-base">Start your journey by creating your first knowledge flow above.</p>

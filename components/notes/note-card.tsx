@@ -16,11 +16,11 @@ export function NoteCard({ note, onClick }: Props) {
   return (
     <Card
       onClick={onClick}
-      className="cursor-pointer overflow-hidden rounded-xl border border-slate-100 bg-white p-4 transition-all hover:border-sky-200 hover:shadow-md md:rounded-2xl md:p-5"
+      className="cursor-pointer overflow-hidden rounded-xl border border-slate-100 bg-white p-4 transition-all hover:border-primary/20 hover:shadow-md md:rounded-2xl md:p-5"
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex min-w-0 items-center gap-2.5 md:gap-3">
-          <StickyNote className="h-4 w-4 shrink-0 text-sky-400 md:h-5 md:w-5" />
+          <StickyNote className="h-4 w-4 shrink-0 text-primary/70 md:h-5 md:w-5" />
           <h3 className="truncate text-sm font-bold text-slate-800 md:text-base">
             {note.title}
           </h3>

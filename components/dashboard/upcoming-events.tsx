@@ -13,7 +13,7 @@ export function UpcomingEvents() {
                             key={i}
                             className="flex items-center gap-4 border-none p-4"
                         >
-                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                                 <Calendar className="h-5 w-5" />
                             </div>
                             <div>

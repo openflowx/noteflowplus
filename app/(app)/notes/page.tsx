@@ -47,24 +47,24 @@ export default function NotesPage() {
     return (
         <div className="relative min-h-[calc(100vh-4rem)] overflow-x-hidden">
             {/* Background Decorations */}
-            <div className="absolute right-[-10%] top-[-10%] h-[45%] w-[60%] animate-pulse rounded-full bg-sky-100/40 blur-[80px] -z-10 md:blur-[130px] lg:w-[45%]" />
-            <div className="absolute bottom-[5%] left-[-5%] h-[35%] w-[50%] rounded-full bg-blue-100/30 blur-[70px] -z-10 md:blur-[110px] lg:w-[35%]" />
+            <div className="absolute right-[-10%] top-[-10%] h-[45%] w-[60%] animate-pulse rounded-full bg-primary/10 blur-[80px] -z-10 md:blur-[130px] lg:w-[45%]" />
+            <div className="absolute bottom-[5%] left-[-5%] h-[35%] w-[50%] rounded-full bg-primary/5 blur-[70px] -z-10 md:blur-[110px] lg:w-[35%]" />
 
             <div className="relative mx-auto  space-y-8 px-4 py-8 md:space-y-12 md:px-6 md:py-12 lg:px-10">
                 <header className="flex flex-col gap-6 border-b border-slate-200/60 pb-8 md:flex-row md:items-end md:justify-between md:gap-8 md:pb-10">
                     <div className="space-y-2 md:space-y-3">
-                        <div className="inline-flex items-center rounded-full bg-sky-100 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-sky-600">
+                        <div className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">
                             Workstream
                         </div>
                         <h1 className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl lg:text-4xl">
-                            Notes <span className="text-sky-500">&</span> Insights
+                            Notes <span className="text-primary">&</span> Insights
                         </h1>
                         <p className="max-w-md text-base leading-relaxed text-slate-500 md:text-lg">
                             Capture thoughts and iterate on your ideas within specific flows.
                         </p>
                     </div>
 
-                    <div className="flex w-full flex-col items-stretch gap-3 rounded-[1.5rem] border border-white/60 bg-white/40 p-2 shadow-xl shadow-sky-100/20 backdrop-blur-xl sm:w-auto sm:flex-row sm:items-center sm:rounded-[2rem]">
+                    <div className="flex w-full flex-col items-stretch gap-3 rounded-[1.5rem] border border-white/60 bg-white/40 p-2 shadow-xl shadow-primary/5 backdrop-blur-xl sm:w-auto sm:flex-row sm:items-center sm:rounded-[2rem]">
                         <div className="relative group flex-1 sm:flex-none">
                             <Select
                                 value={selectedFlowId || "none"}
@@ -87,7 +87,7 @@ export default function NotesPage() {
                         {selectedFlowId && (
                             <Button
                                 onClick={createNote}
-                                className="h-11! flex items-center justify-center gap-2 rounded-xl bg-sky-500 px-6 text-sm font-bold text-white transition-all hover:scale-[1.02] hover:bg-sky-600 active:scale-[0.98] sm:h-12! sm:rounded-2xl sm:px-8 sm:text-base"
+                                className="h-11! flex items-center justify-center gap-2 rounded-xl bg-primary px-6 text-sm font-bold text-primary-foreground transition-all hover:scale-[1.02] hover:bg-primary-emphasis active:scale-[0.98] sm:h-12! sm:rounded-2xl sm:px-8 sm:text-base"
                             >
                                 <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
                                 New Note
@@ -98,24 +98,24 @@ export default function NotesPage() {
 
                 <main className="min-h-125">
                     {!selectedFlowId ? (
-                        <div className="group relative flex flex-col items-center justify-center overflow-hidden rounded-[2.5rem] border border-white/80 bg-white/40 px-6 py-16 text-center shadow-2xl shadow-sky-100/20 backdrop-blur-md md:rounded-[3rem] md:py-32">
-                            <div className="absolute inset-0 bg-linear-to-br from-sky-50/50 to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
+                        <div className="group relative flex flex-col items-center justify-center overflow-hidden rounded-[2.5rem] border border-white/80 bg-white/40 px-6 py-16 text-center shadow-2xl shadow-primary/5 backdrop-blur-md md:rounded-[3rem] md:py-32">
+                            <div className="absolute inset-0 bg-linear-to-br from-primary/5 to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
 
                             <div className="relative">
-                                <div className="mb-6 inline-block transform rounded-[1.5rem] bg-white p-5 shadow-xl shadow-sky-100/50 transition duration-500 group-hover:rotate-6 sm:mb-8 sm:rounded-[2rem] sm:p-6">
-                                    <AlertCircle className="h-10 w-10 text-sky-400 sm:h-12 sm:w-12" />
+                                <div className="mb-6 inline-block transform rounded-[1.5rem] bg-white p-5 shadow-xl shadow-primary/10 transition duration-500 group-hover:rotate-6 sm:mb-8 sm:rounded-[2rem] sm:p-6">
+                                    <AlertCircle className="h-10 w-10 text-primary/60 sm:h-12 sm:w-12" />
                                 </div>
                                 <h2 className="mb-3 text-2xl font-bold tracking-tight text-slate-900 sm:mb-4 sm:text-3xl">Select a Workspace</h2>
                                 <p className="mx-auto mb-8 max-w-sm text-sm leading-relaxed text-slate-500 sm:mb-10 sm:text-lg">
                                     To start creating magic, please pick a flow from the dropdown above. Your notes need a home!
                                 </p>
                                 <div className="flex justify-center">
-                                    <div className="h-1.5 w-20 rounded-full bg-sky-100 sm:w-24" />
+                                    <div className="h-1.5 w-20 rounded-full bg-primary/10 sm:w-24" />
                                 </div>
                             </div>
                         </div>
                     ) : (
-                        <div className="rounded-[2rem] border border-white/60 bg-white/40 p-1.5 shadow-2xl shadow-sky-100/10 backdrop-blur-xl min-h-150 sm:p-2 md:rounded-[3rem]">
+                        <div className="rounded-[2rem] border border-white/60 bg-white/40 p-1.5 shadow-2xl shadow-primary/5 backdrop-blur-xl min-h-150 sm:p-2 md:rounded-[3rem]">
                             <div className="h-full overflow-hidden rounded-[1.8rem] bg-white p-4 sm:rounded-[2.5rem] sm:p-6 lg:p-10">
                                 <NotesTabs
                                     notes={notes}

@@ -19,7 +19,7 @@ export function NotesEditorPanel({ note, isSaving, onUpdate }: Props) {
     return (
         <div className="relative space-y-4">
             {isSaving && (
-                <div className="absolute right-0 top-0 z-10 flex items-center gap-2 rounded-lg bg-white/80 px-2 py-1 text-xs font-bold uppercase tracking-wider text-sky-400 backdrop-blur-sm">
+                <div className="absolute right-0 top-0 z-10 flex items-center gap-2 rounded-lg bg-white/80 px-2 py-1 text-xs font-bold uppercase tracking-wider text-primary/70 backdrop-blur-sm">
                     <Loader2 className="h-3 w-3 animate-spin" />
                     Saving...
                 </div>

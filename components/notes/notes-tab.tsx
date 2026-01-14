@@ -21,14 +21,14 @@ export function NotesTabs({ notes, activeNote, onSelect, onUpdate, isSaving, isL
                     <TabsTrigger
                         value="list"
                         onClick={() => onSelect("")}
-                        className="rounded-xl px-4 py-2 text-xs font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-sky-600 data-[state=active]:shadow-md md:px-6 md:py-2.5 md:text-sm"
+                        className="rounded-xl px-4 py-2 text-xs font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md md:px-6 md:py-2.5 md:text-sm"
                     >
                         All Notes
                     </TabsTrigger>
                     {activeNote && (
                         <TabsTrigger
                             value="edit"
-                            className="rounded-xl px-4 py-2 text-xs font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-sky-600 data-[state=active]:shadow-md md:px-6 md:py-2.5 md:text-sm"
+                            className="rounded-xl px-4 py-2 text-xs font-bold transition-all data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-md md:px-6 md:py-2.5 md:text-sm"
                         >
                             Editor
                         </TabsTrigger>
@@ -37,12 +37,12 @@ export function NotesTabs({ notes, activeNote, onSelect, onUpdate, isSaving, isL
 
                 <div className="flex items-center gap-4">
                     {isSaving && (
-                        <div className="flex animate-pulse items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-sky-400">
-                            <div className="h-1.5 w-1.5 rounded-full bg-sky-400" />
+                        <div className="flex animate-pulse items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-primary/70">
+                            <div className="h-1.5 w-1.5 rounded-full bg-primary/70" />
                             Auto-saving
                         </div>
                     )}
-                    {isLoading && <Loader2 className="h-4 w-4 animate-spin text-sky-400 md:h-5 md:w-5" />}
+                    {isLoading && <Loader2 className="h-4 w-4 animate-spin text-primary/70 md:h-5 md:w-5" />}
                 </div>
             </div>
 
