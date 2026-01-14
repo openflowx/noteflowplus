@@ -18,7 +18,7 @@ export function HeroCard() {
             <div className="relative w-full rounded-[2.5rem] overflow-hidden border border-gray-200 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.25)]">
 
                 {/* Soft gradient glow */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.15),transparent_60%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,var(--color-primary),transparent_60%)] opacity-10" />
 
                 {/* Grid Background */}
                 <div className="absolute inset-0 opacity-60">
@@ -41,7 +41,7 @@ export function HeroCard() {
                 <div className="relative aspect-video flex flex-col items-center justify-center p-8">
                     <div className="text-center z-10">
                         <h1 className="text-6xl md:text-8xl font-extrabold leading-tight">
-                            <span className="text-blue-500">Study</span>
+                            <span className="text-primary">Study</span>
                             <span className="text-gray-900"> Smarter</span>
                         </h1>
                         <h1 className="text-6xl md:text-8xl font-extrabold leading-tight mt-2">
