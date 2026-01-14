@@ -9,7 +9,7 @@ interface StatCardProps {
     iconColor: string;
 }
 
-export function StatCard({ icon: Icon, label, value, bg, iconColor }: StatCardProps) {
+export function StatCard({ icon: Icon, label, value, bg, iconColor }: Readonly<StatCardProps>) {
     return (
         <Card className={`flex flex-col justify-between border-none p-6 ${bg}`}>
             <Icon className={`h-6 w-6 ${iconColor}`} />

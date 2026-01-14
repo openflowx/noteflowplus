@@ -4,7 +4,7 @@ import { NotesEditorPanel } from "./note-editor-panel"
 import { Note } from "@/types/notes"
 import { Loader2 } from "lucide-react"
 
-interface Props {
+interface NotesTabProps {
     notes: Note[]
     activeNote: Note | null
     onSelect: (id: string) => void
@@ -13,7 +13,7 @@ interface Props {
     isLoading: boolean
 }
 
-export function NotesTabs({ notes, activeNote, onSelect, onUpdate, isSaving, isLoading }: Props) {
+export function NotesTabs({ notes, activeNote, onSelect, onUpdate, isSaving, isLoading }: Readonly<NotesTabProps>) {
     return (
         <Tabs value={activeNote ? "edit" : "list"} onValueChange={() => { }} className="flex h-full flex-col">
             <div className="mb-6 flex flex-col items-center justify-between gap-4 md:mb-8 md:flex-row md:gap-0">

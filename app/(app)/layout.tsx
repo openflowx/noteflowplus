@@ -5,9 +5,9 @@ import { FlowStoreInitializer } from "@/components/flow/flow-store-initializer";
 
 export default async function AppLayout({
     children,
-}: {
-    children: React.ReactNode;
-}) {
+}: Readonly<{
+     children: React.ReactNode;
+}>) {
     const preferences = await getUserPreferences();
 
     return (

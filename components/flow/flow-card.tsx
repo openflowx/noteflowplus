@@ -9,12 +9,13 @@ interface FlowCardProps {
     onClick?: () => void;
 }
 
-export function FlowCard({ flow, selected = false, onClick }: FlowCardProps) {
+export function FlowCard({ flow, selected = false, onClick }: Readonly<FlowCardProps>) {
     return (
-        <div
+        <button
+            type="button"
             onClick={onClick}
             className={cn(
-                "group relative cursor-pointer overflow-hidden rounded-2xl border-2 p-5 transition-all duration-300 shadow-lg shadow-primary/5 md:rounded-[1.8rem] md:p-6",
+                "group relative cursor-pointer overflow-hidden rounded-2xl border-2 p-5 transition-all duration-300 shadow-lg shadow-primary/5 md:rounded-[1.8rem] md:p-6 text-start",
                 selected
                     ? "scale-[1.01] border-primary bg-white shadow-sm shadow-primary/10"
                     : "border-transparent bg-white/60 backdrop-blur-md hover:border-primary/20 hover:bg-white hover:shadow-lg hover:shadow-primary/5 md:hover:scale-[1.01]"
@@ -70,6 +71,6 @@ export function FlowCard({ flow, selected = false, onClick }: FlowCardProps) {
                     </div>
                 )}
             </div>
-        </div>
+        </button>
     );
 }

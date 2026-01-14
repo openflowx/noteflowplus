@@ -2,7 +2,7 @@ import { Note } from "@/types/notes"
 import { Card } from "@/components/ui/card"
 import { StickyNote } from "lucide-react"
 
-interface Props {
+interface NoteCardProps {
   note: Note
   onClick: () => void
 }
@@ -12,7 +12,7 @@ const dateFormatter = new Intl.DateTimeFormat(undefined, {
   day: "numeric",
 })
 
-export function NoteCard({ note, onClick }: Props) {
+export function NoteCard({ note, onClick }: Readonly<NoteCardProps>) {
   return (
     <Card
       onClick={onClick}

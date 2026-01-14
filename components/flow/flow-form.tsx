@@ -17,7 +17,7 @@ interface CreateFlowFormProps {
     }>;
 }
 
-export function CreateFlowForm({ onSubmit }: CreateFlowFormProps) {
+export function CreateFlowForm({ onSubmit }: Readonly<CreateFlowFormProps>) {
     const {
         register,
         handleSubmit,
@@ -36,11 +36,10 @@ export function CreateFlowForm({ onSubmit }: CreateFlowFormProps) {
     const onFormSubmit = async (data: FlowInsertValues) => {
         const result = await onSubmit(data);
 
-        if (!result || !result.success) {
+        if (!result?.success) {
             toast.error(result?.message ?? "Something went wrong");
             return;
         }
-
 
         reset();
         toast.success("Flow created successfully!");

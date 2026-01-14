@@ -3,13 +3,14 @@ import NoteEditor from "@/components/notes/note-editor"
 import { Note } from "@/types/notes"
 import { Loader2 } from "lucide-react"
 
-interface Props {
+interface NoteEditorPanelProps {
     note: Note | null
     isSaving?: boolean
     onUpdate: (updates: Partial<Note>) => void
 }
 
-export function NotesEditorPanel({ note, isSaving, onUpdate }: Props) {
+export function NotesEditorPanel({ note, isSaving, onUpdate }: Readonly<NoteEditorPanelProps>) {
+    
     if (!note) return (
         <div className="flex items-center justify-center h-100 border-2 border-dashed rounded-xl text-muted-foreground">
             Select a note or create a new one

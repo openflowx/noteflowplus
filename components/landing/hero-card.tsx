@@ -4,7 +4,7 @@ export function HeroCard() {
             {/* Text Intro */}
             <div className="flex flex-col items-center text-center space-y-8 mb-12">
                 <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight max-w-4xl text-balance leading-tight">
-                    AI-Powered Revolution in
+                    AI-Powered Revolution in{" "}
                     <span className="block text-gray-900">Note Taking</span>
                 </h1>
 

@@ -41,13 +41,13 @@ export function FlowSwitcher() {
         setFlowId(id);
         try {
             const res = await updateSelectedFlow(id);
-            if (!res.success) {
-                toast.error("Failed to save flow preference");
-            } else {
+            if (res.success) {
                 const flowName = flows.find(f => f.id === id)?.title || "None";
                 toast.success(`Context switched to: ${flowName}`, {
                     duration: 2000
                 });
+            } else {
+                toast.error("Failed to save flow preference");
             }
         } catch (err) {
             console.error(err);

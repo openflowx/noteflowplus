@@ -41,12 +41,12 @@ export function useFlows() {
             try {
                 const result = await createFlowAction(values);
 
-                if (!result.success) {
+                if (result.success) {
+                    await fetchFlows(); // sync with server
+                } else {
                     // rollback
                     setFlows(prev => prev.filter(f => f.id !== tempFlow.id));
                     setError(result.message || "Failed to create flow");
-                } else {
-                    await fetchFlows(); // sync with server
                 }
 
                 setIsSubmitting(false);
