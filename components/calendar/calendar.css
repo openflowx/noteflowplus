@@ -1,0 +1,80 @@
+@reference "../../app/globals.css";
+
+/* FullCalendar Premium Overrides */
+.fc {
+  --fc-border-color: var(--border);
+  --fc-button-bg-color: var(--card);
+  --fc-button-border-color: var(--border);
+  --fc-button-hover-bg-color: var(--accent);
+  --fc-button-hover-border-color: var(--border);
+  --fc-button-active-bg-color: var(--accent);
+  --fc-button-active-border-color: var(--primary);
+  --fc-event-bg-color: var(--primary);
+  --fc-event-border-color: var(--primary);
+  --fc-today-bg-color: var(--primary-subtle);
+  font-family: inherit;
+}
+
+.fc .fc-toolbar-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.fc .fc-button {
+  @apply rounded-xl px-4 py-2 text-sm font-medium transition-all shadow-none outline-none focus:ring-2 focus:ring-primary/20 border;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active, 
+.fc .fc-button-primary:not(:disabled):active {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--primary);
+}
+
+.fc .fc-col-header-cell {
+  padding: 12px 0;
+  font-size: 0.825rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  border-bottom: 1px solid var(--border);
+}
+
+.fc .fc-daygrid-day-number {
+  padding: 8px;
+  font-size: 0.875rem;
+  color: var(--foreground);
+}
+
+.fc .fc-daygrid-event {
+  @apply rounded-lg px-2 py-1 text-xs font-medium transition-transform active:scale-95 cursor-pointer border-none shadow-sm;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: var(--primary-subtle);
+}
+
+.fc .fc-scrollgrid {
+  border: none !important;
+}
+
+.fc .fc-day {
+  transition: background-color 0.2s;
+}
+
+.fc .fc-day:hover {
+  background-color: var(--accent);
+}
+
+/* Glassmorphism for events */
+.fc-v-event, .fc-h-event {
+  background-color: var(--primary);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fc-v-event .fc-event-main-frame {
+  padding: 2px 4px;
+}
