@@ -43,30 +43,30 @@ export default function CalendarPage() {
     ];
 
     return (
-        <div className="relative min-h-[calc(100vh-4rem)] overflow-x-hidden pt-8 md:pt-12">
+        <div className="relative flex flex-col h-[calc(100vh-4rem)] overflow-hidden">
             {/* Background Decorations */}
             <div className="absolute left-[-10%] top-[-10%] h-[40%] w-[60%] animate-pulse rounded-full bg-primary/10 blur-[80px] -z-10 md:blur-[120px] lg:w-[40%]" />
             <div className="absolute bottom-[10%] right-[-5%] h-[30%] w-[50%] rounded-full bg-primary/5 blur-[70px] -z-10 md:blur-[100px] lg:w-[30%]" />
 
-            <div className="mx-auto max-w-[1600px] px-4 md:px-6 lg:px-10 space-y-8">
-                {/* Header Section */}
-                <div className="space-y-3">
-                    <div className="mb-1 inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary md:mb-2 md:text-xs">
+            <div className="flex-1 flex flex-col mx-auto w-full max-w-[1600px] px-4 md:px-6 lg:px-10 py-6 md:py-8 space-y-6 md:space-y-8">
+                {/* Header Section - Compact */}
+                <div className="space-y-1 md:space-y-2">
+                    <div className="inline-flex items-center rounded-full bg-primary/10 px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary md:text-xs">
                         Flow Schedule
                     </div>
-                    <h1 className="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl lg:text-4xl text-balance">
-                        Event <span className="text-primary">Timeline</span>
-                    </h1>
-                    <p className="max-w-2xl text-base leading-relaxed text-slate-500 md:text-lg">
-                        Manage your deadlines and flow-specific events in a unified, interactive schedule.
-                    </p>
+                    <div className="flex items-center justify-between">
+                        <h1 className="text-xl font-bold tracking-tight text-slate-900 md:text-2xl lg:text-3xl text-balance">
+                            Event <span className="text-primary">Timeline</span>
+                        </h1>
+                        <p className="hidden md:block max-w-md text-sm leading-relaxed text-slate-500">
+                            Unified interactive schedule for your deadlines and flow events.
+                        </p>
+                    </div>
                 </div>
 
-                {/* Calendar Wrapper */}
-                <div className="rounded-[2rem] border border-white/60 bg-white/40 p-1 shadow-2xl shadow-primary/5 backdrop-blur-xl md:rounded-[2.5rem] overflow-hidden">
-                    <div className="h-[750px] w-full">
-                        <CalendarContainer events={mockEvents} />
-                    </div>
+                {/* Calendar Wrapper - Fills available height */}
+                <div className="flex-1 min-h-0 rounded-[2rem] border border-white/60 bg-white shadow-2xl shadow-primary/5 backdrop-blur-xl md:rounded-[2.5rem] overflow-hidden">
+                    <CalendarContainer events={mockEvents} />
                 </div>
             </div>
         </div>
