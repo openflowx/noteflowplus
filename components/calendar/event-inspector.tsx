@@ -1,5 +1,6 @@
 "use client";
 
+import {  useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCalendarStore } from '@/store/use-calendar-store';
 import { Button } from '@/components/ui/button';
@@ -14,10 +15,21 @@ import { CALENDAR_LAYOUT } from '@/lib/constants';
 export function EventInspector() {
     const { selectedEvent, isInspectorOpen, closeInspector } = useCalendarStore();
     const isLargeScreen = useIsLargeScreen();
+    const titleInputRef = useRef<HTMLInputElement>(null);
+
+    const isNew = selectedEvent?.id === 'new';
+
+    // Delay focus to prevent layout snapping during the sidebar animation
+    useEffect(() => {
+        if (isInspectorOpen && isNew && isLargeScreen) {
+            const timer = setTimeout(() => {
+                titleInputRef.current?.focus();
+            }, 400); // Wait for sidebar animation to mostly complete
+            return () => clearTimeout(timer);
+        }
+    }, [isInspectorOpen, isNew, isLargeScreen]);
 
     if (!selectedEvent) return null;
-
-    const isNew = selectedEvent.id === 'new';
 
     const InspectorContent = (
         <div className="flex flex-col h-full bg-card">
@@ -55,11 +67,11 @@ export function EventInspector() {
                 {/* Title Section */}
                 <div className="space-y-4">
                     <input
+                        ref={titleInputRef}
                         type="text"
                         placeholder="Event Title"
                         defaultValue={selectedEvent.title}
                         className="w-full text-2xl md:text-3xl font-bold bg-transparent border-none outline-none placeholder:text-muted-foreground/30 focus:ring-0"
-                        autoFocus={isNew}
                     />
                     <div className="flex flex-wrap items-center gap-2">
                         <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 transition-colors cursor-pointer px-2 py-0.5 text-[10px]">
