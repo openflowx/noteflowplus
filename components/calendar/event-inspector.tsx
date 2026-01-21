@@ -1,6 +1,6 @@
 "use client";
 
-import {  useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCalendarStore } from '@/store/use-calendar-store';
 import { Button } from '@/components/ui/button';
@@ -142,7 +142,7 @@ export function EventInspector() {
             </div>
 
             {/* Sticky Footer */}
-            <div className="p-4 bg-accent/5 border-t border-border mt-auto">
+            <div className="p-6 bg-accent/5 border-t border-border mt-auto">
                 <div className="flex items-center justify-between text-[9px] font-bold text-muted-foreground/60 uppercase tracking-widest">
                     <span>Created: {format(selectedEvent.start, 'MMM d, yyyy')}</span>
                     <span className="flex items-center gap-1">
@@ -175,9 +175,8 @@ export function EventInspector() {
                     animate={{ x: 0 }}
                     exit={{ x: '100%' }}
                     transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                    className="fixed top-[4.5rem] right-4 bottom-4 bg-card border border-border rounded-[2.5rem] shadow-2xl z-50 overflow-hidden flex flex-col"
+                    className="fixed top-6 right-6 bottom-6 bg-card border border-border rounded-[2.5rem] shadow-xl z-50 overflow-hidden flex flex-col"
                     style={{
-                        height: 'calc(100vh - 5.5rem)',
                         width: `${CALENDAR_LAYOUT.INSPECTOR_WIDTH}px`
                     }}
                 >
