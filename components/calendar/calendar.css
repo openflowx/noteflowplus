@@ -1,23 +1,36 @@
 @reference "../../app/globals.css";
 
-/* FullCalendar Premium Overrides for Clean-App Feel */
+/**
+ * CALENDAR COMPONENT STYLES
+ * ----------------------------------------------------------------------------
+ * This file contains global overrides for FullCalendar to align it with our
+ * premium design system. We use CSS variables for theme consistency and 
+ * Tailwind @apply for layout spacing.
+ */
+
 .fc {
-  --fc-border-color: #f1f5f9; /* slate-100 */
+  /* --- Core Theme Variables --- */
+  /* We override FullCalendar's internal variables to match our slate/primary palette */
+  --fc-border-color: #f1f5f9;       /* slate-100: Subtle grid lines */
   --fc-button-bg-color: #ffffff;
-  --fc-button-border-color: #e2e8f0; /* slate-200 */
+  --fc-button-border-color: #e2e8f0; /* slate-200: Soft button borders */
   --fc-button-hover-bg-color: #f8fafc;
   --fc-button-active-bg-color: oklch(0.65 0.2 240);
-  --fc-today-bg-color: oklch(0.98 0.01 240);
+  --fc-today-bg-color: oklch(0.98 0.01 240); /* Very light primary tint for current day */
   --fc-page-bg-color: #ffffff;
+  
   background: #ffffff;
-  font-family: inherit;
+  font-family: inherit; /* Ensure Geist or system font flows through */
 }
 
-/* Header & Toolbar - Modern Minimalist & Responsive */
+/* --- Navigation & Toolbar --- 
+   Handles responsive layout for the calendar controls (Prev/Next, Title, View Switcher)
+*/
 .fc .fc-toolbar {
   @apply mb-4 flex flex-col gap-4 p-4 md:mb-6 md:flex-row md:items-center md:justify-between md:px-6 md:pt-6;
 }
 
+/* On mobile, we move the title to the top (first child in flex-col) */
 .fc .fc-toolbar-chunk:nth-child(2) {
     @apply order-first md:order-0;
 }
@@ -30,10 +43,12 @@
     @apply gap-1;
 }
 
+/* Custom rounded-xl buttons to match our primary UI kit */
 .fc .fc-button {
   @apply inline-flex items-center justify-center rounded-xl px-3 py-1.5 text-[10px] md:text-xs font-bold transition-all shadow-none outline-none ring-primary/20 focus:ring-2 border border-slate-200 text-slate-600 active:scale-95;
 }
 
+/* Active view button styling - follows primary brand color */
 .fc .fc-button-primary:not(:disabled).fc-button-active, 
 .fc .fc-button-primary:not(:disabled):active {
   background-color: oklch(0.65 0.2 240);
@@ -41,11 +56,14 @@
   border-color: oklch(0.65 0.2 240);
 }
 
-/* Grid & Cells */
+/* --- Grid & Cell Architecture --- 
+   Cleaning up the default "table-heavy" look of FullCalendar
+*/
 .fc .fc-scrollgrid {
-  @apply border-none!;
+  @apply border-none!; /* Remove heavy outer borders */
 }
 
+/* Column headers (Mon, Tue, etc.) - Minimalist uppercase design */
 .fc .fc-col-header-cell {
   @apply py-3 text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-slate-400 border-b border-slate-100;
 }
@@ -58,6 +76,7 @@
   @apply p-2 md:p-3 text-[10px] md:text-xs font-bold text-slate-400;
 }
 
+/* Today indicator - subtle primary circle around the date number */
 .fc .fc-day-today {
   @apply bg-primary/5!;
 }
@@ -66,18 +85,21 @@
   @apply text-primary bg-primary/10 rounded-full inline-flex items-center justify-center min-w-5 h-5 md:min-w-6 md:h-6 m-1 md:m-2;
 }
 
-/* More Link Styling */
+/* "Show More" Link styling - pill shaped for better click target */
 .fc .fc-daygrid-more-link {
     @apply text-[9px] md:text-[10px] font-bold text-primary bg-primary/5 px-1.5 py-0.5 rounded-full hover:bg-primary/10 transition-colors;
 }
 
-/* Popover Styling (The box in the user's image) */
+/* --- Event Popover (Dialog) --- 
+   Appears when "Show More" is clicked. Overridden for maximum readability.
+*/
 .fc .fc-popover {
-    @apply rounded-2xl border-none shadow-2xl shadow-primary/10 ring-1 ring-black/5 bg-white overflow-hidden z-100;
+    @apply rounded-2xl border border-slate-200/50 shadow-2xl shadow-primary/20 bg-white overflow-hidden z-100;
+    background-color: white; /* Ensure no transparency bleed from background grid */
 }
 
 .fc .fc-popover-header {
-    @apply bg-slate-50 p-3 flex items-center justify-between border-b border-slate-100;
+    @apply bg-slate-50/80 p-3 flex items-center justify-between border-b border-slate-100 backdrop-blur-md;
 }
 
 .fc .fc-popover-title {
@@ -85,21 +107,32 @@
 }
 
 .fc .fc-popover-close {
-    @apply text-slate-400 hover:text-slate-600 transition-colors;
+    @apply text-slate-400 hover:text-slate-600 transition-colors p-1 rounded-full hover:bg-slate-100;
 }
 
 .fc .fc-popover-body {
-    @apply p-2 space-y-1;
+    @apply p-3 space-y-1.5 bg-white;
 }
 
-/* Touch Friendly Mobile Targets */
+/* List View inside popover - optimized for readability */
+.fc-popover .fc-daygrid-event {
+    @apply p-2 rounded-xl border-none transition-colors hover:bg-slate-50;
+}
+
+.fc-popover .fc-event-main {
+    @apply text-slate-700;
+}
+
+/* --- Mobile Adaptations --- */
 @media (max-width: 768px) {
   .fc .fc-daygrid-day-frame {
-    min-height: 70px;
+    min-height: 70px; /* Taller cells for better touch interaction */
   }
 }
 
-/* Events - Premium Solid Style */
+/* --- Event Design --- 
+   Modern "Pill" style events with white text for high contrast.
+*/
 .fc-v-event, .fc-h-event {
   @apply rounded-lg border-none shadow-sm transition-transform active:scale-95 px-1 py-0.5;
   background-color: var(--fc-event-bg-color, oklch(0.65 0.2 240)) !important;
@@ -109,6 +142,7 @@
   @apply p-1 text-[9px] md:text-[10px] font-bold text-white leading-tight truncate;
 }
 
+/* Dot style for certain views/overflows */
 .fc .fc-daygrid-event-dot {
   @apply border-2 border-primary mr-2;
 }

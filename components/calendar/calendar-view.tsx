@@ -1,6 +1,5 @@
 "use client";
 
-import React from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -12,7 +11,7 @@ interface CalendarViewProps {
     events?: any[];
 }
 
-export function CalendarView({ events = [] }: CalendarViewProps) {
+export function CalendarView({ events = [] }: Readonly<CalendarViewProps>) {
     const { setSelectedEvent, setView, view } = useCalendarStore();
 
     const handleEventClick = (info: any) => {
