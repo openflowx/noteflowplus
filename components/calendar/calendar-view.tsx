@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useEffect } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -13,6 +14,22 @@ interface CalendarViewProps {
 
 export function CalendarView({ events = [] }: Readonly<CalendarViewProps>) {
     const { setSelectedEvent, setView, view } = useCalendarStore();
+    const calendarRef = useRef<FullCalendar>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+
+    // Use ResizeObserver to automatically handle container resizes
+    useEffect(() => {
+        const calendarApi = calendarRef.current?.getApi();
+        if (!calendarApi || !containerRef.current) return;
+
+        const observer = new ResizeObserver(() => {
+            calendarApi.updateSize();
+        });
+
+        observer.observe(containerRef.current);
+
+        return () => observer.disconnect();
+    }, []);
 
     const handleEventClick = (info: any) => {
         const event = info.event;
@@ -31,7 +48,6 @@ export function CalendarView({ events = [] }: Readonly<CalendarViewProps>) {
     };
 
     const handleDateSelect = (selectInfo: any) => {
-        // Open inspector with a new event template
         setSelectedEvent({
             id: 'new',
             title: '',
@@ -44,8 +60,9 @@ export function CalendarView({ events = [] }: Readonly<CalendarViewProps>) {
     };
 
     return (
-        <div className="h-full w-full p-4 overflow-hidden">
+        <div ref={containerRef} className="h-full w-full p-4 overflow-hidden">
             <FullCalendar
+                ref={calendarRef}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView={view}
                 headerToolbar={{

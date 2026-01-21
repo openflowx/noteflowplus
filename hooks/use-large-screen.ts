@@ -1,13 +1,18 @@
-// hooks/use-is-large-screen.ts
+// hooks/use-large-screen.ts
 import { useState, useEffect } from 'react';
 
 export const useIsLargeScreen = (breakpoint = 1024) => {
-    const [isLarge, setIsLarge] = useState(false);
+    const [isLarge, setIsLarge] = useState(() => {
+        if (globalThis.window !== undefined) {
+            return globalThis.window.innerWidth >= breakpoint;
+        }
+        return false;
+    });
 
     useEffect(() => {
-        const checkScreen = () => setIsLarge(window.innerWidth >= breakpoint);
+        const checkScreen = () => setIsLarge(globalThis.window.innerWidth >= breakpoint);
 
-        // Initial check
+        // Successive check in case of mount timing
         checkScreen();
 
         window.addEventListener('resize', checkScreen);
@@ -15,4 +20,4 @@ export const useIsLargeScreen = (breakpoint = 1024) => {
     }, [breakpoint]);
 
     return isLarge;
-}
+};

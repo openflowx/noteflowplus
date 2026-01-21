@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { useIsLargeScreen } from '@/hooks/use-large-screen';
+import { CALENDAR_LAYOUT } from '@/lib/constants';
 
 export function EventInspector() {
     const { selectedEvent, isInspectorOpen, closeInspector } = useCalendarStore();
@@ -162,8 +163,11 @@ export function EventInspector() {
                     animate={{ x: 0 }}
                     exit={{ x: '100%' }}
                     transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                    className="fixed top-[4.5rem] right-4 bottom-4 w-112.5 bg-card border border-border rounded-[2.5rem] shadow-2xl z-50 overflow-hidden flex flex-col"
-                    style={{ height: 'calc(100vh - 5.5rem)' }}
+                    className="fixed top-[4.5rem] right-4 bottom-4 bg-card border border-border rounded-[2.5rem] shadow-2xl z-50 overflow-hidden flex flex-col"
+                    style={{
+                        height: 'calc(100vh - 5.5rem)',
+                        width: `${CALENDAR_LAYOUT.INSPECTOR_WIDTH}px`
+                    }}
                 >
                     {InspectorContent}
                 </motion.div>
