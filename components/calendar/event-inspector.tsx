@@ -1,6 +1,5 @@
 "use client";
 
-import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCalendarStore } from '@/store/use-calendar-store';
 import { Button } from '@/components/ui/button';
@@ -9,19 +8,11 @@ import { format } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { useIsLargeScreen } from '@/hooks/use-large-screen';
 
 export function EventInspector() {
     const { selectedEvent, isInspectorOpen, closeInspector } = useCalendarStore();
-
-    // Use 1024px as the threshold for the sidebar vs drawer
-    const [isLargeScreen, setIsLargeScreen] = React.useState(false);
-
-    React.useEffect(() => {
-        const checkScreen = () => setIsLargeScreen(window.innerWidth >= 1024);
-        checkScreen();
-        window.addEventListener('resize', checkScreen);
-        return () => window.removeEventListener('resize', checkScreen);
-    }, []);
+    const isLargeScreen = useIsLargeScreen();
 
     if (!selectedEvent) return null;
 

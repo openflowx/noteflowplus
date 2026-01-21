@@ -1,24 +1,16 @@
 "use client";
 
-import React from 'react';
+
 import { CalendarView } from './calendar-view';
 import { EventInspector } from './event-inspector';
 import { motion } from 'framer-motion';
 import { useCalendarStore } from '@/store/use-calendar-store';
+import { useIsLargeScreen } from '@/hooks/use-large-screen';
 
 export function CalendarContainer({ events = [] }: Readonly<{ events?: any[] }>) {
     const { isInspectorOpen } = useCalendarStore();
-
-    // Use 1024px as the threshold for the sidebar vs drawer
-    const [isLargeScreen, setIsLargeScreen] = React.useState(false);
-
-    React.useEffect(() => {
-        const checkScreen = () => setIsLargeScreen(window.innerWidth >= 1024);
-        checkScreen();
-        window.addEventListener('resize', checkScreen);
-        return () => window.removeEventListener('resize', checkScreen);
-    }, []);
-
+    const isLargeScreen = useIsLargeScreen();
+    
     return (
         <div className="relative flex h-full w-full overflow-hidden bg-white">
             {/* Calendar Grid */}
