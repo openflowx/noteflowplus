@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const eventSchema = z.object({
-    id: z.uuid().optional(),
-    flowId: z.uuid({ message: "Flow is required" }),
+    id: z.string().uuid().optional(),
+    flowId: z.string().uuid({ message: "Flow is required" }),
     title: z.string().min(1, "Title is required"),
     startDatetime: z.date(),
     endDatetime: z.date(),

@@ -1,8 +1,12 @@
 import { CalendarContainer } from "@/components/calendar/calendar-container";
 import { getEventsAction } from "@/app/actions/calendar";
+import { getFlowsAction } from "@/app/actions/flow";
 
 export default async function CalendarPage() {
-    const events = await getEventsAction();
+    const [events, flows] = await Promise.all([
+        getEventsAction(),
+        getFlowsAction()
+    ]);
 
     return (
         <div className="relative flex flex-col h-[calc(100vh-4rem)] overflow-hidden">
@@ -28,7 +32,7 @@ export default async function CalendarPage() {
 
                 {/* Calendar Wrapper - Fills available height */}
                 <div className="flex-1 min-h-0 rounded-[2rem] border border-white/60 bg-white shadow-2xl shadow-primary/5 backdrop-blur-xl md:rounded-[2.5rem] overflow-hidden">
-                    <CalendarContainer events={events} />
+                    <CalendarContainer events={events} flows={flows} />
                 </div>
             </div>
         </div>

@@ -7,7 +7,7 @@ import { useCalendarStore } from '@/store/use-calendar-store';
 import { useIsLargeScreen } from '@/hooks/use-large-screen';
 import { getInspectorTotalWidth } from '@/lib/constants';
 
-export function CalendarContainer({ events = [] }: Readonly<{ events?: any[] }>) {
+export function CalendarContainer({ events = [], flows = [] }: Readonly<{ events?: any[], flows?: any[] }>) {
     const isInspectorOpen = useCalendarStore((state) => state.isInspectorOpen);
     const isLargeScreen = useIsLargeScreen();
 
@@ -28,7 +28,7 @@ export function CalendarContainer({ events = [] }: Readonly<{ events?: any[] }>)
             </motion.div>
 
             {/* Inspector Sidebar / Mobile Drawer handled inside EventInspector */}
-            <EventInspector />
+            <EventInspector flows={flows} />
         </div>
     );
 }
