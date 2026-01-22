@@ -1,46 +1,8 @@
 import { CalendarContainer } from "@/components/calendar/calendar-container";
+import { getEventsAction } from "@/app/actions/calendar";
 
-
-export default function CalendarPage() {
-    // Mock events for UI demonstration
-    const mockEvents = [
-        {
-            id: '1',
-            title: 'Project Alpha Kickoff',
-            start: new Date(new Date().setHours(10, 0, 0, 0)),
-            end: new Date(new Date().setHours(11, 30, 0, 0)),
-            extendedProps: {
-                description: 'Discuss initial requirements and team roles.',
-                flowId: 'flow-1',
-                status: 'completed'
-            },
-            backgroundColor: 'oklch(0.65 0.2 240)',
-        },
-        {
-            id: '2',
-            title: 'Design Review',
-            start: new Date(new Date().setDate(new Date().getDate() + 1)),
-            allDay: true,
-            extendedProps: {
-                description: 'Review the latest UI mockups with the stakeholders.',
-                flowId: 'flow-2',
-                status: 'todo'
-            },
-            backgroundColor: 'oklch(0.7 0.15 180)',
-        },
-        {
-            id: '3',
-            title: 'Weekly Sync',
-            start: new Date(new Date().setHours(14, 0, 0, 0)),
-            end: new Date(new Date().setHours(15, 0, 0, 0)),
-            extendedProps: {
-                description: 'Catch up on progress and blockers.',
-                flowId: 'flow-1',
-                status: 'in-progress'
-            },
-            backgroundColor: 'oklch(0.75 0.15 60)',
-        }
-    ];
+export default async function CalendarPage() {
+    const events = await getEventsAction();
 
     return (
         <div className="relative flex flex-col h-[calc(100vh-4rem)] overflow-hidden">
@@ -66,7 +28,7 @@ export default function CalendarPage() {
 
                 {/* Calendar Wrapper - Fills available height */}
                 <div className="flex-1 min-h-0 rounded-[2rem] border border-white/60 bg-white shadow-2xl shadow-primary/5 backdrop-blur-xl md:rounded-[2.5rem] overflow-hidden">
-                    <CalendarContainer events={mockEvents} />
+                    <CalendarContainer events={events} />
                 </div>
             </div>
         </div>
