@@ -6,6 +6,27 @@ import { events, flows } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { eq, inArray } from "drizzle-orm";
 
+/**
+ * Maps incoming UI event data to database structure
+ */
+const mapToDbEvent = (values: any) => {
+    // Determine which field contains 'all day' status (UI uses isAllDay, FC uses allDay)
+    const isAllDay = values.isAllDay ?? values.allDay ?? false;
+
+    return {
+        flowId: values.flowId,
+        title: values.title,
+        startDatetime: values.start ? new Date(values.start) : new Date(),
+        endDatetime: values.end ? new Date(values.end) : new Date(),
+        description: values.description ?? null,
+        content: values.content ?? null,
+        color: values.color ?? values.backgroundColor ?? null,
+        status: values.status ?? "todo",
+        isAllDay: isAllDay ? 1 : 0,
+        updatedAt: new Date(),
+    };
+};
+
 export const createEventAction = async (values: any) => {
     const { userId } = await auth();
     if (!userId) {
@@ -13,25 +34,11 @@ export const createEventAction = async (values: any) => {
     }
 
     try {
-        const data = {
-            ...values,
-            startDatetime: values.start ? new Date(values.start) : null,
-            endDatetime: values.end ? new Date(values.end) : null,
-            isAllDay: values.allDay ? 1 : 0,
-            status: values.status || "todo",
-        };
+        const data = mapToDbEvent(values);
 
-        // If extendedProps were passed, flatten them
-        if (values.extendedProps) {
-            Object.assign(data, values.extendedProps);
-            delete data.extendedProps;
+        if (!data.flowId) {
+            return { success: false, message: "Flow ID is required" };
         }
-
-        // Clean up UI-specific fields
-        delete data.start;
-        delete data.end;
-        delete data.allDay;
-        delete data.id; // Ensure we don't try to insert 'new' or existing ID
 
         await db.insert(events).values(data);
     } catch (err) {
@@ -50,32 +57,11 @@ export const updateEventAction = async (id: string, values: any) => {
     }
 
     try {
-        const updateData: any = { ...values, updatedAt: new Date() };
-
-        if (values.start) {
-            updateData.startDatetime = new Date(values.start);
-            delete updateData.start;
-        }
-        if (values.end) {
-            updateData.endDatetime = new Date(values.end);
-            delete updateData.end;
-        }
-        if (values.allDay !== undefined) {
-            updateData.isAllDay = values.allDay ? 1 : 0;
-            delete updateData.allDay;
-        }
-
-        // Flatten extendedProps if present
-        if (values.extendedProps) {
-            Object.assign(updateData, values.extendedProps);
-            delete updateData.extendedProps;
-        }
-
-        // Ensure we don't update ID
-        delete updateData.id;
+        // Prepare data for update - only include valid columns
+        const data = mapToDbEvent(values);
 
         await db.update(events)
-            .set(updateData)
+            .set(data)
             .where(eq(events.id, id));
     } catch (err) {
         console.error("Failed to update event:", err);

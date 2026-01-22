@@ -151,7 +151,7 @@ export function EventInspector({ flows = [] }: Readonly<EventInspectorProps>) {
             </div>
 
             {/* Content Container */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-8 no-scrollbar">
+            <div key={selectedEvent.id} className="flex-1 overflow-y-auto p-6 space-y-8 no-scrollbar">
                 {/* Title Section */}
                 <div className="space-y-4">
                     <input
