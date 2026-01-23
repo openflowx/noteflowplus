@@ -35,7 +35,8 @@ export function useEventInspectorLogic(selectedEvent: any, flows: any[], closeIn
         }
     }, [selectedEvent, isNew, isLargeScreen]);
 
-    
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
     // Save/Create logic
     const handleSave = async () => {
         if (!selectedEvent) return;
@@ -74,10 +75,10 @@ export function useEventInspectorLogic(selectedEvent: any, flows: any[], closeIn
         });
     };
 
-    
+
     // Deletion logic with user confirmation
     const handleDelete = async () => {
-        if (!selectedEvent || !confirm("Are you sure you want to delete this event?")) return;
+        if (!selectedEvent) return;
 
         startTransition(async () => {
             try {
@@ -91,6 +92,8 @@ export function useEventInspectorLogic(selectedEvent: any, flows: any[], closeIn
             } catch (err) {
                 console.error("Delete Error:", err);
                 toast.error("An error occurred while deleting the event");
+            } finally {
+                setIsDeleteDialogOpen(false);
             }
         });
     };
@@ -104,6 +107,8 @@ export function useEventInspectorLogic(selectedEvent: any, flows: any[], closeIn
         descriptionRef,
         handleSave,
         handleDelete,
-        currentFlow
+        currentFlow,
+        isDeleteDialogOpen,
+        setIsDeleteDialogOpen
     };
 }
