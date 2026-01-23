@@ -85,6 +85,11 @@ export function CalendarView({ events = [] }: Readonly<CalendarViewProps>) {
                     }
                 }}
                 eventContent={renderEventContent}
+                eventTimeFormat={{
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    meridiem: 'short' // Changes time format from 'a' to 'am'
+                }}
             />
         </div>
     );
@@ -92,9 +97,13 @@ export function CalendarView({ events = [] }: Readonly<CalendarViewProps>) {
 
 function renderEventContent(eventInfo: any) {
     return (
-        <div className="flex flex-col gap-0.5 overflow-hidden">
-            <div className="font-bold truncate">{eventInfo.timeText}</div>
-            <div className="truncate">{eventInfo.event.title}</div>
+        <div className="flex flex-col gap-0.5 overflow-hidden px-1">
+            <div className="text-[9px] text-white/80 leading-none truncate font-medium">
+                {eventInfo.timeText}
+            </div>
+            <div className="truncate font-bold leading-tight text-white text-[10px]">
+                {eventInfo.event.title}
+            </div>
         </div>
     );
 }

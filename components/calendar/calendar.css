@@ -139,10 +139,17 @@
 }
 
 .fc .fc-event-main {
-  @apply p-1 text-[9px] md:text-[10px] font-bold text-white leading-tight truncate;
+  @apply p-1 text-[10px] font-bold text-white;
+  
 }
 
 /* Dot style for certain views/overflows */
 .fc .fc-daygrid-event-dot {
   @apply border-2 border-primary mr-2;
+}
+
+.fc-v-event, .fc-h-event, .fc-daygrid-event {
+  @apply rounded-lg border-none shadow-sm px-1 py-0.5;
+  /* This links it directly to your theme's primary color */
+  background-color: var(--primary) !important;
 }
