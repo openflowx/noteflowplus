@@ -60,7 +60,7 @@ export function CalendarView({ events = [] }: Readonly<CalendarViewProps>) {
     };
 
     return (
-        <div ref={containerRef} className="h-full w-full p-4 overflow-hidden">
+        <div ref={containerRef} className="h-full w-full overflow-hidden">
             <FullCalendar
                 ref={calendarRef}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}

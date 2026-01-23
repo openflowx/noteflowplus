@@ -31,7 +31,7 @@ export default async function CalendarPage() {
                 </div>
 
                 {/* Calendar Wrapper - Fills available height */}
-                <div className="flex-1 min-h-0 rounded-[2rem] border border-white/60 bg-white shadow-2xl shadow-primary/5 backdrop-blur-xl md:rounded-[2.5rem] overflow-hidden">
+                <div className="flex-1 min-h-0 rounded-[2rem] border border-white/60 bg-white shadow-2xl shadow-primary/5 md:rounded-[2.5rem] overflow-hidden">
                     <CalendarContainer events={events} flows={flows} />
                 </div>
             </div>
