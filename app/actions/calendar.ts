@@ -25,6 +25,22 @@ const mapToDbEvent = (values: any) => {
     };
 };
 
+// Helper: Map DB event to UI structure
+const mapToUiEvent = (event: any) => ({
+    id: event.id,
+    title: event.title,
+    start: event.startDatetime,
+    end: event.endDatetime,
+    allDay: event.isAllDay === 1,
+    backgroundColor: event.color,
+    extendedProps: {
+        description: event.description,
+        content: event.content,
+        flowId: event.flowId,
+        status: event.status,
+    },
+});
+
 
 // Helper: Check if a flow belongs to the user
 const verifyFlowOwnership = async (flowId: string, userId: string) => {
@@ -59,9 +75,17 @@ export const createEventAction = async (values: any) => {
     if (!hasAccess) return { success: false, message: "Unauthorized: Flow access denied" };
 
     try {
-        await db.insert(events).values(data);
+        const [inserted] = await db.insert(events).values(data).returning();
+
+        if (!inserted) {
+            return { success: false, message: "Failed to create event" };
+        }
+
         revalidatePath("/calendar");
-        return { success: true };
+        return {
+            success: true,
+            event: mapToUiEvent(inserted)
+        };
     } catch (err) {
         console.error("Failed to create event:", err);
         return { success: false, message: "Failed to create event" };
@@ -79,9 +103,20 @@ export const updateEventAction = async (id: string, values: any) => {
     const data = mapToDbEvent(values);
 
     try {
-        await db.update(events).set(data).where(eq(events.id, id));
+        const [updated] = await db.update(events)
+            .set(data)
+            .where(eq(events.id, id))
+            .returning();
+
+        if (!updated) {
+            return { success: false, message: "Failed to update event" };
+        }
+
         revalidatePath("/calendar");
-        return { success: true };
+        return {
+            success: true,
+            event: mapToUiEvent(updated)
+        };
     } catch (err) {
         console.error("Failed to update event:", err);
         return { success: false, message: "Failed to update event" };
@@ -125,20 +160,7 @@ export const getEventsAction = async () => {
             orderBy: (events, { asc }) => [asc(events.startDatetime)],
         });
 
-        return allEvents.map(event => ({
-            id: event.id,
-            title: event.title,
-            start: event.startDatetime,
-            end: event.endDatetime,
-            allDay: event.isAllDay === 1,
-            backgroundColor: event.color,
-            extendedProps: {
-                description: event.description,
-                content: event.content,
-                flowId: event.flowId,
-                status: event.status,
-            },
-        }));
+        return allEvents.map(mapToUiEvent);
     } catch (err) {
         console.error("Failed to fetch events:", err);
         return [];
