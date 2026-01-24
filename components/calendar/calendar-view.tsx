@@ -6,6 +6,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useCalendarStore } from '@/store/use-calendar-store';
+import { updateEventAction } from '@/app/actions/calendar';
+import { toast } from 'sonner';
 import './calendar.css';
 
 interface CalendarViewProps {
@@ -59,6 +61,42 @@ export function CalendarView({ events = [] }: Readonly<CalendarViewProps>) {
         });
     };
 
+    const handleEventDrop = async (info: any) => {
+        const { event } = info;
+        const result = await updateEventAction(event.id, {
+            ...event.extendedProps,
+            title: event.title,
+            start: event.start,
+            end: event.end,
+            allDay: event.allDay,
+        });
+
+        if (result.success) {
+            toast.success("Event moved successfully");
+        } else {
+            info.revert();
+            toast.error(result.message ?? "Failed to move event");
+        }
+    };
+
+    const handleEventResize = async (info: any) => {
+        const { event } = info;
+        const result = await updateEventAction(event.id, {
+            ...event.extendedProps,
+            title: event.title,
+            start: event.start,
+            end: event.end,
+            allDay: event.allDay,
+        });
+
+        if (result.success) {
+            toast.success("Event duration updated");
+        } else {
+            info.revert();
+            toast.error(result.message ?? "Failed to resize event");
+        }
+    };
+
     return (
         <div ref={containerRef} className="h-full w-full overflow-hidden">
             <FullCalendar
@@ -78,6 +116,8 @@ export function CalendarView({ events = [] }: Readonly<CalendarViewProps>) {
                 events={events}
                 select={handleDateSelect}
                 eventClick={handleEventClick}
+                eventDrop={handleEventDrop}
+                eventResize={handleEventResize}
                 height="100%"
                 datesSet={(info) => {
                     if (info.view.type !== view) {
