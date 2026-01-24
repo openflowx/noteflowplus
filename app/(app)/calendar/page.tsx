@@ -24,9 +24,7 @@ export default async function CalendarPage() {
                         <h1 className="text-xl font-bold tracking-tight text-slate-900 md:text-2xl lg:text-3xl text-balance">
                             Event <span className="text-primary">Timeline</span>
                         </h1>
-                        <p className="hidden md:block max-w-md text-sm leading-relaxed text-slate-500">
-                            Unified interactive schedule for your deadlines and flow events.
-                        </p>
+                        
                     </div>
                 </div>
 

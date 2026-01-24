@@ -177,7 +177,7 @@ export const EventInspector = ({ flows = [] }: Readonly<EventInspectorProps>) =>
                         animate={{ x: 0, opacity: 1 }}
                         exit={{ x: '110%', opacity: 0 }}
                         transition={{ type: 'spring', damping: 26, stiffness: 200 }}
-                        className="fixed top-6 right-6 bottom-6 bg-card border border-border rounded-[2.5rem] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] z-50 overflow-hidden flex flex-col premium-glass"
+                        className="absolute top-6 right-6 bottom-6 bg-card border  rounded-[2rem]  shadow-md flex flex-col premium-glass z-50"
                         style={{ width: `${CALENDAR_LAYOUT.INSPECTOR_WIDTH}px` }}
                     >
                         {InspectorHeader}
