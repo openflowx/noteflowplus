@@ -37,6 +37,8 @@ export const EventInspector = ({ flows = [] }: Readonly<EventInspectorProps>) =>
         isPending,
         selectedFlowId,
         setSelectedFlowId,
+        selectedStatus,
+        setSelectedStatus,
         titleInputRef,
         descriptionRef,
         handleSave,
@@ -117,6 +119,8 @@ export const EventInspector = ({ flows = [] }: Readonly<EventInspectorProps>) =>
         descriptionRef,
         selectedFlowId,
         setSelectedFlowId,
+        selectedStatus,
+        setSelectedStatus,
         currentFlow,
         isNew
     };

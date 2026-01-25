@@ -26,6 +26,8 @@ interface EventInspectorFormProps {
     descriptionRef: React.RefObject<HTMLTextAreaElement | null>;
     selectedFlowId: string;
     setSelectedFlowId: (id: string) => void;
+    selectedStatus: "todo" | "in-progress" | "completed";
+    setSelectedStatus: (status: "todo" | "in-progress" | "completed") => void;
     currentFlow: Flow | undefined;
     isNew: boolean;
 }
@@ -37,9 +39,17 @@ export function EventInspectorForm({
     titleInputRef,
     descriptionRef,
     setSelectedFlowId,
+    selectedStatus,
+    setSelectedStatus,
     currentFlow,
     isNew
 }: Readonly<EventInspectorFormProps>) {
+    const statusConfig = {
+        "todo": { label: "Todo", color: "bg-blue-500/10 text-blue-600 border-blue-500/20 hover:bg-blue-500/20" },
+        "in-progress": { label: "In Progress", color: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20 hover:bg-yellow-500/20" },
+        "completed": { label: "Completed", color: "bg-green-500/10 text-green-600 border-green-500/20 hover:bg-green-500/20" },
+    };
+
     return (
         <div key={selectedEvent.id} className="flex-1 overflow-y-auto p-6 space-y-8 no-scrollbar">
             {/* Title & Status Section */}
@@ -53,10 +63,30 @@ export function EventInspectorForm({
                     className="w-full text-2xl md:text-3xl font-bold bg-transparent border-none outline-none placeholder:text-muted-foreground/30 focus:ring-0 disabled:opacity-50"
                 />
                 <div className="flex flex-wrap items-center gap-2">
-                    <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 transition-colors cursor-pointer px-2 py-0.5 text-[10px]">
-                        <CheckCircle2 className="h-3 w-3 mr-1" />
-                        {'extendedProps' in selectedEvent ? selectedEvent.extendedProps.status : selectedEvent.status}
-                    </Badge>
+                    {/* Status Selection Dropdown */}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild disabled={isPending}>
+                            <Badge
+                                variant="secondary"
+                                className={`${statusConfig[selectedStatus].color} transition-colors cursor-pointer px-2 py-0.5 text-[10px] gap-1`}
+                            >
+                                <CheckCircle2 className="h-3 w-3" />
+                                {statusConfig[selectedStatus].label}
+                                <ChevronDown className="h-2 w-2 ml-0.5" />
+                            </Badge>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="w-[160px] rounded-2xl p-2 shadow-2xl border-border/50">
+                            {Object.entries(statusConfig).map(([key, config]) => (
+                                <DropdownMenuItem
+                                    key={key}
+                                    onClick={() => setSelectedStatus(key as "todo" | "in-progress" | "completed")}
+                                    className="rounded-xl cursor-pointer p-3 transition-colors"
+                                >
+                                    <span className="font-bold text-xs">{config.label}</span>
+                                </DropdownMenuItem>
+                            ))}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
 
                     {/* Flow Selection Dropdown */}
                     <DropdownMenu>

@@ -21,6 +21,7 @@ export function useEventInspectorLogic(
     const titleInputRef = useRef<HTMLInputElement>(null);
     const descriptionRef = useRef<HTMLTextAreaElement>(null);
     const [selectedFlowId, setSelectedFlowId] = useState<string>('');
+    const [selectedStatus, setSelectedStatus] = useState<"todo" | "in-progress" | "completed">("todo");
 
     const isNew = selectedEvent?.id === 'new';
     const currentFlow = useMemo(
@@ -35,6 +36,11 @@ export function useEventInspectorLogic(
                 ? selectedEvent.extendedProps.flowId
                 : selectedEvent.flowId;
             setSelectedFlowId(flowId || globalFlowId || flows[0]?.id || '');
+
+            const status = 'extendedProps' in selectedEvent
+                ? selectedEvent.extendedProps.status
+                : selectedEvent.status;
+            setSelectedStatus(status);
         }
     }, [selectedEvent, globalFlowId, flows]);
 
@@ -67,9 +73,7 @@ export function useEventInspectorLogic(
             start: selectedEvent.start,
             end: selectedEvent.end,
             isAllDay: 'allDay' in selectedEvent ? selectedEvent.allDay : selectedEvent.isAllDay,
-            status: 'extendedProps' in selectedEvent
-                ? selectedEvent.extendedProps.status
-                : selectedEvent.status,
+            status: selectedStatus,
         };
 
         startTransition(async () => {
@@ -119,6 +123,8 @@ export function useEventInspectorLogic(
         isPending,
         selectedFlowId,
         setSelectedFlowId,
+        selectedStatus,
+        setSelectedStatus,
         titleInputRef,
         descriptionRef,
         handleSave,
