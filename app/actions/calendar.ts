@@ -19,7 +19,6 @@ import type {
 const mapToDbEvent = (values: EventActionData): Omit<DbEvent, "id" | "createdAt" | "updatedAt"> => {
 
     const isAllDay = values.isAllDay ?? values.allDay ?? false;
-    const color = values.color ?? values.backgroundColor ?? null;
 
     return {
         flowId: values.flowId,
@@ -27,7 +26,6 @@ const mapToDbEvent = (values: EventActionData): Omit<DbEvent, "id" | "createdAt"
         startDatetime: values.start instanceof Date ? values.start : new Date(values.start),
         endDatetime: values.end instanceof Date ? values.end : new Date(values.end),
         description: values.description ?? null,
-        color: color,
         status: values.status ?? "todo",
         isAllDay: isAllDay ? 1 : 0,
     };
@@ -40,8 +38,7 @@ const mapToUiEvent = (event: DbEvent): CalendarEvent => ({
     title: event.title,
     start: event.startDatetime,
     end: event.endDatetime,
-    allDay: event.isAllDay === 1, // Convert integer to boolean for UI
-    backgroundColor: event.color ?? undefined,
+    allDay: event.isAllDay === 1,
     extendedProps: {
         description: event.description ?? undefined,
         flowId: event.flowId,
@@ -85,7 +82,6 @@ export const createEventAction = async (
         startDatetime: values.start,
         endDatetime: values.end,
         description: values.description,
-        color: values.color ?? values.backgroundColor,
         status: values.status,
         isAllDay: values.isAllDay ?? values.allDay,
     });

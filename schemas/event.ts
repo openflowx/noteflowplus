@@ -13,7 +13,6 @@ export const eventSchema = z.object({
         z.string().refine((val) => !Number.isNaN(Date.parse(val)), { message: "Invalid date format" })
     ]).transform((val) => typeof val === "string" ? new Date(val) : val),
     description: z.string().max(1000).optional(),
-    color: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/).optional(),
     status: z.enum(["todo", "in-progress", "completed"]).default("todo"),
     isAllDay: z.boolean().default(false),
 }).refine(

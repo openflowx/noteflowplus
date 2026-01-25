@@ -43,7 +43,6 @@ export const CalendarView = ({ events = [] }: Readonly<CalendarViewProps>) => {
             end: event.end,
             description: event.extendedProps.description,
             flowId: event.extendedProps.flowId,
-            color: event.backgroundColor,
             status: event.extendedProps.status,
             isAllDay: event.allDay,
         });
