@@ -9,7 +9,6 @@ export interface DbEvent {
     startDatetime: Date;
     endDatetime: Date;
     description: string | null;
-    content: string | null;
     color: string | null;
     status: "todo" | "in-progress" | "completed";
     isAllDay: number; // 0 = false, 1 = true 
@@ -38,7 +37,6 @@ export interface CalendarEvent {
     backgroundColor?: string;
     extendedProps: {
         description?: string;
-        content?: string;
         flowId: string;
         status: "todo" | "in-progress" | "completed";
     };
@@ -54,7 +52,6 @@ export interface NewCalendarEvent {
     status: "todo" | "in-progress" | "completed";
     isAllDay: boolean;
     description?: string;
-    content?: string;
     color?: string;
 }
 
@@ -81,7 +78,6 @@ export interface EventActionData {
     start: Date | string;
     end: Date | string;
     description?: string;
-    content?: string;
     color?: string;
     backgroundColor?: string; // Alias for color 
     status?: "todo" | "in-progress" | "completed";

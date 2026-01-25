@@ -73,9 +73,6 @@ export function useEventInspectorLogic(
             color: 'backgroundColor' in selectedEvent
                 ? selectedEvent.backgroundColor
                 : ('color' in selectedEvent ? selectedEvent.color : undefined),
-            content: 'extendedProps' in selectedEvent
-                ? selectedEvent.extendedProps.content
-                : selectedEvent.content,
         };
 
         startTransition(async () => {

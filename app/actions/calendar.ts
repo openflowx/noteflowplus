@@ -27,10 +27,9 @@ const mapToDbEvent = (values: EventActionData): Omit<DbEvent, "id" | "createdAt"
         startDatetime: values.start instanceof Date ? values.start : new Date(values.start),
         endDatetime: values.end instanceof Date ? values.end : new Date(values.end),
         description: values.description ?? null,
-        content: values.content ?? null,
         color: color,
         status: values.status ?? "todo",
-        isAllDay: isAllDay ? 1 : 0, 
+        isAllDay: isAllDay ? 1 : 0,
     };
 };
 
@@ -45,7 +44,6 @@ const mapToUiEvent = (event: DbEvent): CalendarEvent => ({
     backgroundColor: event.color ?? undefined,
     extendedProps: {
         description: event.description ?? undefined,
-        content: event.content ?? undefined,
         flowId: event.flowId,
         status: event.status,
     },
@@ -87,7 +85,6 @@ export const createEventAction = async (
         startDatetime: values.start,
         endDatetime: values.end,
         description: values.description,
-        content: values.content,
         color: values.color ?? values.backgroundColor,
         status: values.status,
         isAllDay: values.isAllDay ?? values.allDay,
