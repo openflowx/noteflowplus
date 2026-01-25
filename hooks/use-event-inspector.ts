@@ -5,9 +5,14 @@ import { toast } from 'sonner';
 import { useFlowStore } from '@/store/use-flow-store';
 import { useIsLargeScreen } from '@/hooks/use-large-screen';
 import { createEventAction, updateEventAction, deleteEventAction } from '@/app/actions/calendar';
+import type { SelectedEvent } from '@/types/calendar';
+import type { Flow } from '@/types/flow';
 
-
-export function useEventInspectorLogic(selectedEvent: any, flows: any[], closeInspector: () => void) {
+export function useEventInspectorLogic(
+    selectedEvent: SelectedEvent | null,
+    flows: Flow[],
+    closeInspector: () => void
+) {
     const { selectedFlowId: globalFlowId } = useFlowStore();
     const isLargeScreen = useIsLargeScreen();
     const [isPending, startTransition] = useTransition();
@@ -18,12 +23,18 @@ export function useEventInspectorLogic(selectedEvent: any, flows: any[], closeIn
     const [selectedFlowId, setSelectedFlowId] = useState<string>('');
 
     const isNew = selectedEvent?.id === 'new';
-    const currentFlow = useMemo(() => flows.find(f => f.id === selectedFlowId), [flows, selectedFlowId]);
+    const currentFlow = useMemo(
+        () => flows.find(f => f.id === selectedFlowId),
+        [flows, selectedFlowId]
+    );
 
     // Synchronize local state with the selected event or active global context
     useEffect(() => {
         if (selectedEvent) {
-            setSelectedFlowId(selectedEvent.flowId || globalFlowId || flows[0]?.id || '');
+            const flowId = 'extendedProps' in selectedEvent
+                ? selectedEvent.extendedProps.flowId
+                : selectedEvent.flowId;
+            setSelectedFlowId(flowId || globalFlowId || flows[0]?.id || '');
         }
     }, [selectedEvent, globalFlowId, flows]);
 
@@ -50,10 +61,21 @@ export function useEventInspectorLogic(selectedEvent: any, flows: any[], closeIn
         }
 
         const eventData = {
-            ...selectedEvent,
+            flowId: selectedFlowId,
             title,
             description,
-            flowId: selectedFlowId,
+            start: selectedEvent.start,
+            end: selectedEvent.end,
+            isAllDay: 'allDay' in selectedEvent ? selectedEvent.allDay : selectedEvent.isAllDay,
+            status: 'extendedProps' in selectedEvent
+                ? selectedEvent.extendedProps.status
+                : selectedEvent.status,
+            color: 'backgroundColor' in selectedEvent
+                ? selectedEvent.backgroundColor
+                : ('color' in selectedEvent ? selectedEvent.color : undefined),
+            content: 'extendedProps' in selectedEvent
+                ? selectedEvent.extendedProps.content
+                : selectedEvent.content,
         };
 
         startTransition(async () => {
@@ -78,7 +100,7 @@ export function useEventInspectorLogic(selectedEvent: any, flows: any[], closeIn
 
     // Deletion logic with user confirmation
     const handleDelete = async () => {
-        if (!selectedEvent) return;
+        if (!selectedEvent || selectedEvent.id === 'new') return;
 
         startTransition(async () => {
             try {

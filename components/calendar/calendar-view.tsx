@@ -8,13 +8,14 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { useCalendarStore } from '@/store/use-calendar-store';
 import { updateEventAction } from '@/app/actions/calendar';
 import { toast } from 'sonner';
+import type { CalendarEvent } from '@/types/calendar';
 import './calendar.css';
 
 interface CalendarViewProps {
-    events?: any[];
+    events?: CalendarEvent[];
 }
 
-export function CalendarView({ events = [] }: Readonly<CalendarViewProps>) {
+export const CalendarView = ({ events = [] }: Readonly<CalendarViewProps>) => {
     const { setSelectedEvent, setView, view } = useCalendarStore();
     const calendarRef = useRef<FullCalendar>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -135,6 +136,7 @@ export function CalendarView({ events = [] }: Readonly<CalendarViewProps>) {
     );
 }
 
+// Popup event details
 function renderEventContent(eventInfo: any) {
     return (
         <div className="flex flex-col gap-0.5 overflow-hidden px-1">

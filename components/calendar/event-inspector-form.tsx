@@ -15,30 +15,27 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import type { SelectedEvent } from '@/types/calendar';
+import type { Flow } from '@/types/flow';
 
 interface EventInspectorFormProps {
-    selectedEvent: any;
-    flows: any[];
+    selectedEvent: SelectedEvent;
+    flows: Flow[];
     isPending: boolean;
     titleInputRef: React.RefObject<HTMLInputElement | null>;
     descriptionRef: React.RefObject<HTMLTextAreaElement | null>;
     selectedFlowId: string;
     setSelectedFlowId: (id: string) => void;
-    currentFlow: any;
+    currentFlow: Flow | undefined;
     isNew: boolean;
 }
 
-/**
- * Pure UI component for the Event Inspector form content.
- * Keeps the main inspector orchestrator clean.
- */
 export function EventInspectorForm({
     selectedEvent,
     flows,
     isPending,
     titleInputRef,
     descriptionRef,
-    selectedFlowId,
     setSelectedFlowId,
     currentFlow,
     isNew
@@ -58,7 +55,7 @@ export function EventInspectorForm({
                 <div className="flex flex-wrap items-center gap-2">
                     <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20 hover:bg-primary/20 transition-colors cursor-pointer px-2 py-0.5 text-[10px]">
                         <CheckCircle2 className="h-3 w-3 mr-1" />
-                        {selectedEvent.status || 'Todo'}
+                        {'extendedProps' in selectedEvent ? selectedEvent.extendedProps.status : selectedEvent.status}
                     </Badge>
 
                     {/* Flow Selection Dropdown */}
@@ -116,7 +113,7 @@ export function EventInspectorForm({
                     <div className="flex flex-col">
                         <span className="text-[10px] uppercase font-bold tracking-tight text-muted-foreground/60">Time</span>
                         <span className="text-xs font-bold text-slate-900 leading-tight">
-                            {selectedEvent.isAllDay
+                            {('allDay' in selectedEvent ? selectedEvent.allDay : selectedEvent.isAllDay)
                                 ? 'All Day'
                                 : `${format(selectedEvent.start, 'h:mm a')} - ${format(selectedEvent.end, 'h:mm a')}`
                             }
@@ -136,7 +133,7 @@ export function EventInspectorForm({
                 <textarea
                     ref={descriptionRef}
                     placeholder="Enter event details, meeting notes, or task description..."
-                    defaultValue={selectedEvent.description}
+                    defaultValue={'extendedProps' in selectedEvent ? selectedEvent.extendedProps.description : selectedEvent.description}
                     disabled={isPending}
                     className="w-full min-h-32 bg-transparent border-none outline-none resize-none text-sm leading-relaxed placeholder:text-muted-foreground/50 focus:ring-0 disabled:opacity-50"
                 />

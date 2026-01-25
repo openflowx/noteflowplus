@@ -5,53 +5,62 @@ import { db } from "@/db";
 import { events, flows } from "@/db/schema";
 import { revalidatePath } from "next/cache";
 import { eq, inArray, and } from "drizzle-orm";
+import { eventSchema } from "@/schemas/event";
+import type {
+    DbEvent,
+    CalendarEvent,
+    EventActionData,
+    EventActionResponse
+} from "@/types/calendar";
 
 
-// Helper: Map UI values to DB structure
-const mapToDbEvent = (values: any) => {
+
+// Map UI/Form values to database structure
+const mapToDbEvent = (values: EventActionData): Omit<DbEvent, "id" | "createdAt" | "updatedAt"> => {
+
     const isAllDay = values.isAllDay ?? values.allDay ?? false;
+    const color = values.color ?? values.backgroundColor ?? null;
 
     return {
         flowId: values.flowId,
         title: values.title,
-        startDatetime: values.start ? new Date(values.start) : new Date(),
-        endDatetime: values.end ? new Date(values.end) : new Date(),
+        startDatetime: values.start instanceof Date ? values.start : new Date(values.start),
+        endDatetime: values.end instanceof Date ? values.end : new Date(values.end),
         description: values.description ?? null,
         content: values.content ?? null,
-        color: values.color ?? values.backgroundColor ?? null,
+        color: color,
         status: values.status ?? "todo",
-        isAllDay: isAllDay ? 1 : 0,
-        updatedAt: new Date(),
+        isAllDay: isAllDay ? 1 : 0, 
     };
 };
 
-// Helper: Map DB event to UI structure
-const mapToUiEvent = (event: any) => ({
+
+// Map database event to FullCalendar-compatible UI structure
+const mapToUiEvent = (event: DbEvent): CalendarEvent => ({
     id: event.id,
     title: event.title,
     start: event.startDatetime,
     end: event.endDatetime,
-    allDay: event.isAllDay === 1,
-    backgroundColor: event.color,
+    allDay: event.isAllDay === 1, // Convert integer to boolean for UI
+    backgroundColor: event.color ?? undefined,
     extendedProps: {
-        description: event.description,
-        content: event.content,
+        description: event.description ?? undefined,
+        content: event.content ?? undefined,
         flowId: event.flowId,
         status: event.status,
     },
 });
 
-
-// Helper: Check if a flow belongs to the user
-const verifyFlowOwnership = async (flowId: string, userId: string) => {
+// Verify that a flow belongs to the authenticated user
+const verifyFlowOwnership = async (flowId: string, userId: string): Promise<boolean> => {
     const flow = await db.query.flows.findFirst({
         where: and(eq(flows.id, flowId), eq(flows.userId, userId)),
     });
     return !!flow;
 };
 
-// Helper: Check if an event belongs to a flow owned by the user
-const verifyEventOwnership = async (eventId: string, userId: string) => {
+// Verify that an event belongs to a flow owned by the authenticated user
+const verifyEventOwnership = async (eventId: string, userId: string): Promise<boolean> => {
     const existingEvent = await db
         .select({ id: events.id })
         .from(events)
@@ -62,20 +71,48 @@ const verifyEventOwnership = async (eventId: string, userId: string) => {
     return existingEvent.length > 0;
 };
 
-// Create Event
-export const createEventAction = async (values: any) => {
+// Create a new calendar event
+export const createEventAction = async (
+    values: EventActionData
+): Promise<EventActionResponse> => {
     const { userId } = await auth();
-    if (!userId) return { success: false, message: "Unauthorized" };
+    if (!userId) {
+        return { success: false, message: "Unauthorized" };
+    }
+
+    // Validate input data
+    const validationResult = eventSchema.safeParse({
+        flowId: values.flowId,
+        title: values.title,
+        startDatetime: values.start,
+        endDatetime: values.end,
+        description: values.description,
+        content: values.content,
+        color: values.color ?? values.backgroundColor,
+        status: values.status,
+        isAllDay: values.isAllDay ?? values.allDay,
+    });
+
+    if (!validationResult.success) {
+        return {
+            success: false,
+            message: validationResult.error.issues[0]?.message ?? "Validation failed",
+        };
+    }
 
     const data = mapToDbEvent(values);
 
-    if (!data.flowId) return { success: false, message: "Flow ID is required" };
-
+    // Verify user has access to the flow
     const hasAccess = await verifyFlowOwnership(data.flowId, userId);
-    if (!hasAccess) return { success: false, message: "Unauthorized: Flow access denied" };
+    if (!hasAccess) {
+        return { success: false, message: "Unauthorized: Flow access denied" };
+    }
 
     try {
-        const [inserted] = await db.insert(events).values(data).returning();
+        const [inserted] = await db
+            .insert(events)
+            .values({ ...data, updatedAt: new Date() })
+            .returning();
 
         if (!inserted) {
             return { success: false, message: "Failed to create event" };
@@ -84,7 +121,7 @@ export const createEventAction = async (values: any) => {
         revalidatePath("/calendar");
         return {
             success: true,
-            event: mapToUiEvent(inserted)
+            event: mapToUiEvent(inserted as DbEvent),
         };
     } catch (err) {
         console.error("Failed to create event:", err);
@@ -92,19 +129,28 @@ export const createEventAction = async (values: any) => {
     }
 };
 
-// Update Event
-export const updateEventAction = async (id: string, values: any) => {
+// Update an existing calendar event
+export const updateEventAction = async (
+    id: string,
+    values: EventActionData
+): Promise<EventActionResponse> => {
     const { userId } = await auth();
-    if (!userId) return { success: false, message: "Unauthorized" };
+    if (!userId) {
+        return { success: false, message: "Unauthorized" };
+    }
 
+    // Verify user owns this event
     const hasAccess = await verifyEventOwnership(id, userId);
-    if (!hasAccess) return { success: false, message: "Unauthorized or event not found" };
+    if (!hasAccess) {
+        return { success: false, message: "Unauthorized or event not found" };
+    }
 
     const data = mapToDbEvent(values);
 
     try {
-        const [updated] = await db.update(events)
-            .set(data)
+        const [updated] = await db
+            .update(events)
+            .set({ ...data, updatedAt: new Date() })
             .where(eq(events.id, id))
             .returning();
 
@@ -115,7 +161,7 @@ export const updateEventAction = async (id: string, values: any) => {
         revalidatePath("/calendar");
         return {
             success: true,
-            event: mapToUiEvent(updated)
+            event: mapToUiEvent(updated as DbEvent),
         };
     } catch (err) {
         console.error("Failed to update event:", err);
@@ -123,13 +169,18 @@ export const updateEventAction = async (id: string, values: any) => {
     }
 };
 
-// Delete Event
-export const deleteEventAction = async (id: string) => {
+// Delete a calendar event
+export const deleteEventAction = async (id: string): Promise<EventActionResponse> => {
     const { userId } = await auth();
-    if (!userId) return { success: false, message: "Unauthorized" };
+    if (!userId) {
+        return { success: false, message: "Unauthorized" };
+    }
 
+    // Verify user owns this event
     const hasAccess = await verifyEventOwnership(id, userId);
-    if (!hasAccess) return { success: false, message: "Unauthorized or event not found" };
+    if (!hasAccess) {
+        return { success: false, message: "Unauthorized or event not found" };
+    }
 
     try {
         await db.delete(events).where(eq(events.id, id));
@@ -141,12 +192,13 @@ export const deleteEventAction = async (id: string) => {
     }
 };
 
-// Get Events
-export const getEventsAction = async () => {
+// Get all calendar events for the authenticated user
+export const getEventsAction = async (): Promise<CalendarEvent[]> => {
     const { userId } = await auth();
     if (!userId) return [];
 
     try {
+        // Get all flows belonging to the user
         const userFlows = await db.query.flows.findMany({
             where: eq(flows.userId, userId),
             columns: { id: true },
@@ -155,12 +207,13 @@ export const getEventsAction = async () => {
         const flowIds = userFlows.map(f => f.id);
         if (!flowIds.length) return [];
 
+        // Get all events for user's flows
         const allEvents = await db.query.events.findMany({
             where: inArray(events.flowId, flowIds),
             orderBy: (events, { asc }) => [asc(events.startDatetime)],
         });
 
-        return allEvents.map(mapToUiEvent);
+        return allEvents.map(event => mapToUiEvent(event as DbEvent));
     } catch (err) {
         console.error("Failed to fetch events:", err);
         return [];
