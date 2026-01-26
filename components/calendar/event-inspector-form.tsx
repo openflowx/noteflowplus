@@ -7,7 +7,7 @@ import {
     CalendarIcon,
     Clock,
     AlignLeft
-} from 'lucide-react';;
+} from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
@@ -66,16 +66,18 @@ export function EventInspectorForm({
 
     const handleOpenFlowNotes = async (flow: Flow) => {
 
-        setFlowId(flow.id); // Update client-side store immediately
         const res = await updateSelectedFlow(flow.id);
 
         if (res.success) {
+
+            setFlowId(flow.id); // Update client-side store
+
             toast.success(`Context switched to: ${flow.title}`);
+            router.push('/notes'); // navigate after update
+            
         } else {
             toast.error("Failed to switch context");
         }
-
-        router.push('/notes'); // navigate after update
     }
 
     return (

@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { format } from 'date-fns';
-import { X, Trash2, Loader2, MoreVertical } from 'lucide-react';
+import { X, Trash2, Loader2 } from 'lucide-react';
 
 import { useCalendarStore } from '@/store/use-calendar-store';
 import { useIsLargeScreen } from '@/hooks/use-large-screen';
@@ -66,20 +66,15 @@ export const EventInspector = ({ flows = [] }: Readonly<EventInspectorProps>) =>
             </div>
             <div className="flex items-center gap-1.5">
                 {!isNew && (
-                    <>
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            className="text-destructive hover:bg-destructive/10 rounded-full"
-                            onClick={() => setIsDeleteDialogOpen(true)}
-                            disabled={isPending}
-                        >
-                            <Trash2 className="h-4 w-4" />
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-destructive hover:bg-destructive/10 rounded-full"
+                        onClick={() => setIsDeleteDialogOpen(true)}
+                        disabled={isPending}
+                    >
+                        <Trash2 className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" disabled={isPending} className="rounded-full">
-                            <MoreVertical className="h-4 w-4" />
-                        </Button>
-                    </>
                 )}
                 <Button
                     variant="default"
@@ -101,10 +96,7 @@ export const EventInspector = ({ flows = [] }: Readonly<EventInspectorProps>) =>
         <footer className="p-5 bg-muted/30 border-t border-border mt-auto">
             <div className="flex items-center justify-between text-[9px] font-bold text-muted-foreground/50 uppercase tracking-[0.1em]">
                 <span className="flex items-center gap-1.5">
-                    Updated: {format(selectedEvent.start, 'MMM d, h:mm a')}
-                </span>
-                <span className="flex items-center gap-1.5">
-                    Role: <span className="text-primary/70 italic">Owner</span>
+                    Updated At: {format(selectedEvent.start, 'MMM d, h:mm a')}
                 </span>
             </div>
         </footer>
