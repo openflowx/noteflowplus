@@ -22,6 +22,7 @@ import type { Flow } from '@/types/flow';
 import { updateSelectedFlow } from '@/app/actions/preferences';
 import { useRouter } from 'next/navigation';
 import { useFlowStore } from '@/store/use-flow-store';
+import { toast } from "sonner";
 
 
 type EventStatus = "todo" | "in-progress" | "completed";
@@ -62,6 +63,20 @@ export function EventInspectorForm({
 
     const router = useRouter();
     const { setFlowId } = useFlowStore();
+
+    const handleOpenFlowNotes = async (flow: Flow) => {
+
+        setFlowId(flow.id); // Update client-side store immediately
+        const res = await updateSelectedFlow(flow.id);
+
+        if (res.success) {
+            toast.success(`Context switched to: ${flow.title}`);
+        } else {
+            toast.error("Failed to switch context");
+        }
+
+        router.push('/notes'); // navigate after update
+    }
 
     return (
         <div key={selectedEvent.id} className="flex-1 overflow-y-auto p-6 space-y-8 no-scrollbar">
@@ -212,11 +227,7 @@ export function EventInspectorForm({
                         variant="default"
                         size="sm"
                         className="w-full rounded-2xl text-[10px] font-bold shadow-sm hover:shadow-md transition-shadow"
-                        onClick={async () => {
-                            setFlowId(currentFlow.id); // Update client-side store immediately
-                            await updateSelectedFlow(currentFlow.id);
-                            router.push('/notes'); // navigate after update
-                        }}
+                        onClick={() => handleOpenFlowNotes(currentFlow)}
                     >
                         Open Flow Notes
                         <ExternalLink className="ml-2 h-3 w-3" />
