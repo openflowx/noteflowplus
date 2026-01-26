@@ -9,7 +9,7 @@ import { useIsLargeScreen } from '@/hooks/use-large-screen';
 import { CALENDAR_LAYOUT } from '@/lib/constants';
 
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -74,7 +74,7 @@ export const EventInspector = ({ flows = [] }: Readonly<EventInspectorProps>) =>
                         disabled={isPending}
                     >
                         <Trash2 className="h-4 w-4" />
-                        </Button>
+                    </Button>
                 )}
                 <Button
                     variant="default"
@@ -150,6 +150,7 @@ export const EventInspector = ({ flows = [] }: Readonly<EventInspectorProps>) =>
             <>
                 <Sheet open={isInspectorOpen} onOpenChange={(open) => !open && !isPending && closeInspector()}>
                     <SheetContent side="bottom" className="h-[90vh] p-0 rounded-t-[2.5rem] overflow-hidden border-t-0 bg-card ring-0 outline-none">
+                        <SheetTitle className="sr-only">Event Details</SheetTitle>
                         <main className="relative h-full flex flex-col">
                             <div className="absolute top-2 left-1/2 -translate-x-1/2 w-12 h-1 bg-muted/50 rounded-full z-50" />
                             {InspectorHeader}
