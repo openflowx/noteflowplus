@@ -101,6 +101,10 @@ export const events = pgTable("events", {
     startDatetime: timestamp("start_datetime").notNull(),
     endDatetime: timestamp("end_datetime").notNull(),
     description: text("description"),
+    status: text("status").default("todo"), //  in-progress, completed
+    isAllDay: integer("is_all_day").default(0), // 0 for false, 1 for true
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
 }, (table) => [
     index("events_flow_id_idx").on(table.flowId),
 ]);
