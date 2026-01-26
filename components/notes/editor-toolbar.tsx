@@ -20,7 +20,7 @@ interface EditorToolbarProps {
     editor: Editor | null
 }
 
-export function EditorToolbar({ editor }: EditorToolbarProps) {
+export function EditorToolbar({ editor }: Readonly<EditorToolbarProps>) {
     if (!editor) {
         return null
     }

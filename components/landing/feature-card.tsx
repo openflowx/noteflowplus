@@ -25,7 +25,7 @@ export function FeatureCard({
     className,
     variant = "default",
     imageSrc,
-}: FeatureCardProps) {
+}: Readonly<FeatureCardProps>) {
 
 
     if (variant === "image") {

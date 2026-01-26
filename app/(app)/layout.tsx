@@ -1,13 +1,18 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import { getUserPreferences } from "@/app/actions/preferences";
+import { FlowStoreInitializer } from "@/components/flow/flow-store-initializer";
 
-export default function AppLayout({
+export default async function AppLayout({
     children,
-}: {
-    children: React.ReactNode;
-}) {
+}: Readonly<{
+     children: React.ReactNode;
+}>) {
+    const preferences = await getUserPreferences();
+
     return (
         <SidebarProvider>
+            <FlowStoreInitializer initialFlowId={preferences?.lastSelectedFlowId || null} />
             <AppSidebar />
             <main className="flex-1 w-full bg-white min-h-screen">
                 <div className="">

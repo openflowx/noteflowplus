@@ -25,6 +25,7 @@ import {
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import clsx from "clsx"
+import { FlowSwitcher } from "@/components/flow/flow-switcher"
 
 
 const NAV_ITEMS = [
@@ -57,7 +58,12 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
             </SidebarHeader>
 
             {/* Main navigation */}
-            <SidebarContent>
+            <SidebarContent className="px-2">
+
+                {/* Flow Switcher */}
+                <FlowSwitcher />
+
+                {/* Main menu */}
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu className="gap-1">

@@ -101,17 +101,29 @@ export const events = pgTable("events", {
     startDatetime: timestamp("start_datetime").notNull(),
     endDatetime: timestamp("end_datetime").notNull(),
     description: text("description"),
+    status: text("status").default("todo"), //  in-progress, completed
+    isAllDay: integer("is_all_day").default(0), // 0 for false, 1 for true
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
 }, (table) => [
     index("events_flow_id_idx").on(table.flowId),
 ]);
 
+// USER SETTINGS 
+export const userSettings = pgTable("user_settings", {
+    userId: text("user_id").notNull().primaryKey(), // Clerk user ID
+    lastSelectedFlowId: uuid("last_selected_flow_id").references(() => flows.id, { onDelete: "set null" }),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 // RELATIONS 
-export const flowsRelations = relations(flows, ({ many }) => ({
+export const flowsRelations = relations(flows, ({ many, one }) => ({
     notes: many(notes),
     aiQuestions: many(aiQuestions),
     quizzes: many(quizzes),
     events: many(events),
     flowTags: many(flowTags),
+    userSettings: one(userSettings),
 }));
 
 export const notesRelations = relations(notes, ({ one }) => ({
@@ -148,4 +160,8 @@ export const tagsRelations = relations(tags, ({ many }) => ({
 export const flowTagsRelations = relations(flowTags, ({ one }) => ({
     flow: one(flows, { fields: [flowTags.flowId], references: [flows.id] }),
     tag: one(tags, { fields: [flowTags.tagId], references: [tags.id] }),
+}));
+
+export const userSettingsRelations = relations(userSettings, ({ one }) => ({
+    lastSelectedFlow: one(flows, { fields: [userSettings.lastSelectedFlowId], references: [flows.id] }),
 }));
