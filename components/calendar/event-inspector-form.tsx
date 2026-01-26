@@ -18,6 +18,9 @@ import {
 import type { SelectedEvent } from '@/types/calendar';
 import type { Flow } from '@/types/flow';
 
+
+type EventStatus = "todo" | "in-progress" | "completed";
+
 interface EventInspectorFormProps {
     selectedEvent: SelectedEvent;
     flows: Flow[];
@@ -26,8 +29,8 @@ interface EventInspectorFormProps {
     descriptionRef: React.RefObject<HTMLTextAreaElement | null>;
     selectedFlowId: string;
     setSelectedFlowId: (id: string) => void;
-    selectedStatus: "todo" | "in-progress" | "completed";
-    setSelectedStatus: (status: "todo" | "in-progress" | "completed") => void;
+    selectedStatus: EventStatus;
+    setSelectedStatus: (status: EventStatus) => void;
     currentFlow: Flow | undefined;
     isNew: boolean;
 }
@@ -44,6 +47,8 @@ export function EventInspectorForm({
     currentFlow,
     isNew
 }: Readonly<EventInspectorFormProps>) {
+    const isAllDayEvent = 'allDay' in selectedEvent ? selectedEvent.allDay : selectedEvent.isAllDay;
+
     const statusConfig = {
         "todo": { label: "Todo", color: "bg-blue-500/10 text-blue-600 border-blue-500/20 hover:bg-blue-500/20" },
         "in-progress": { label: "In Progress", color: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20 hover:bg-yellow-500/20" },
@@ -79,7 +84,7 @@ export function EventInspectorForm({
                             {Object.entries(statusConfig).map(([key, config]) => (
                                 <DropdownMenuItem
                                     key={key}
-                                    onClick={() => setSelectedStatus(key as "todo" | "in-progress" | "completed")}
+                                    onClick={() => setSelectedStatus(key as EventStatus)}
                                     className="rounded-xl cursor-pointer p-3 transition-colors"
                                 >
                                     <span className="font-bold text-xs">{config.label}</span>
@@ -143,7 +148,7 @@ export function EventInspectorForm({
                     <div className="flex flex-col">
                         <span className="text-[10px] uppercase font-bold tracking-tight text-muted-foreground/60">Time</span>
                         <span className="text-xs font-bold text-slate-900 leading-tight">
-                            {('allDay' in selectedEvent ? selectedEvent.allDay : selectedEvent.isAllDay)
+                            {isAllDayEvent
                                 ? 'All Day'
                                 : `${format(selectedEvent.start, 'h:mm a')} - ${format(selectedEvent.end, 'h:mm a')}`
                             }
