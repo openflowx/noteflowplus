@@ -74,7 +74,7 @@ export function EventInspectorForm({
 
             toast.success(`Context switched to: ${flow.title}`);
             router.push('/notes'); // navigate after update
-            
+
         } else {
             toast.error("Failed to switch context");
         }
@@ -160,7 +160,7 @@ export function EventInspectorForm({
                     </div>
                     <div className="flex flex-col">
                         <span className="text-[10px] uppercase font-bold tracking-tight text-muted-foreground/60">Date</span>
-                        <span className="text-xs font-bold text-slate-900 leading-tight">
+                        <span className="text-xs font-bold text-foreground leading-tight">
                             {format(selectedEvent.start, 'EEE, MMM d, yyyy')}
                         </span>
                     </div>
@@ -172,7 +172,7 @@ export function EventInspectorForm({
                     </div>
                     <div className="flex flex-col">
                         <span className="text-[10px] uppercase font-bold tracking-tight text-muted-foreground/60">Time</span>
-                        <span className="text-xs font-bold text-slate-900 leading-tight">
+                        <span className="text-xs font-bold text-foreground leading-tight">
                             {isAllDayEvent
                                 ? 'All Day'
                                 : `${format(selectedEvent.start, 'h:mm a')} - ${format(selectedEvent.end, 'h:mm a')}`

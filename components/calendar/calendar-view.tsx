@@ -134,7 +134,7 @@ export const CalendarView = ({ events = [] }: Readonly<CalendarViewProps>) => {
     );
 }
 
-// Popup event details
+// Custom inline event content renderer
 function renderEventContent(eventInfo: any) {
     return (
         <div className="flex flex-col gap-0.5 overflow-hidden px-1">
