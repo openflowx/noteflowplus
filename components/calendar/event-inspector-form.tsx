@@ -50,7 +50,7 @@ export function EventInspectorForm({
     const isAllDayEvent = 'allDay' in selectedEvent ? selectedEvent.allDay : selectedEvent.isAllDay;
 
     const statusConfig = {
-        "todo": { label: "Todo", color: "bg-blue-500/10 text-blue-600 border-blue-500/20 hover:bg-blue-500/20" },
+        "todo": { label: "Todo", color: "bg-primary/10 text-primary border-primary/20 hover:bg-primary/20" },
         "in-progress": { label: "In Progress", color: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20 hover:bg-yellow-500/20" },
         "completed": { label: "Completed", color: "bg-green-500/10 text-green-600 border-green-500/20 hover:bg-green-500/20" },
     };
@@ -109,7 +109,7 @@ export function EventInspectorForm({
                                     <DropdownMenuItem
                                         key={flow.id}
                                         onClick={() => setSelectedFlowId(flow.id)}
-                                        className="rounded-xl flex flex-col items-start gap-1 cursor-pointer p-3 transition-colors focus:bg-primary/10 focus:text-primary-foreground"
+                                        className="rounded-xl flex flex-col items-start gap-1 cursor-pointer p-3 transition-colors focus:bg-primary/10"
                                     >
                                         <span className="font-bold text-xs">{flow.title}</span>
                                         {flow.tags?.length > 0 && (
