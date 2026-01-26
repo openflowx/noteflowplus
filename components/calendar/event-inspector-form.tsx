@@ -3,9 +3,11 @@
 import React from 'react';
 import { format } from 'date-fns';
 import {
-    Calendar as CalendarIcon, Clock, AlignLeft,
-    CheckCircle2, ChevronDown
-} from 'lucide-react';
+    CheckCircle2, ChevronDown, ExternalLink, Sparkles,
+    CalendarIcon,
+    Clock,
+    AlignLeft
+} from 'lucide-react';;
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
@@ -17,6 +19,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import type { SelectedEvent } from '@/types/calendar';
 import type { Flow } from '@/types/flow';
+import { updateSelectedFlow } from '@/app/actions/preferences';
+import { useRouter } from 'next/navigation';
+import { useFlowStore } from '@/store/use-flow-store';
 
 
 type EventStatus = "todo" | "in-progress" | "completed";
@@ -54,6 +59,9 @@ export function EventInspectorForm({
         "in-progress": { label: "In Progress", color: "bg-yellow-500/10 text-yellow-600 border-yellow-500/20 hover:bg-yellow-500/20" },
         "completed": { label: "Completed", color: "bg-green-500/10 text-green-600 border-green-500/20 hover:bg-green-500/20" },
     };
+
+    const router = useRouter();
+    const { setFlowId } = useFlowStore();
 
     return (
         <div key={selectedEvent.id} className="flex-1 overflow-y-auto p-6 space-y-8 no-scrollbar">
@@ -174,15 +182,44 @@ export function EventInspectorForm({
                 />
             </section>
 
-            {/* Context Widget: Premium feature hint */}
-            {!isNew && (
-                <div className="p-5 rounded-[2rem] bg-accent/5 border border-dashed border-border/60 text-center space-y-3 group hover:border-primary/20 transition-all hover:bg-accent/10">
-                    <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none">Intelligence Context</div>
-                    <p className="text-xs text-muted-foreground/70 leading-relaxed px-4">
-                        Link this event to a knowledge flow to enable AI assisted notes.
-                    </p>
-                    <Button variant="outline" size="sm" className="w-full rounded-2xl bg-white text-[10px] font-bold shadow-sm hover:shadow-md transition-shadow" disabled={isPending}>
-                        Open Knowledge Studio
+
+            {/* Context Widget: Intelligence Context */}
+            {!isNew && currentFlow && (
+                // ACTIVE STATE: Flow is linked
+                <div className="p-5 rounded-[2rem] bg-primary/5 border border-primary/20 space-y-3 transition-all">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <Sparkles className="h-3 w-3 text-primary" />
+                            <div className="text-[10px] font-bold text-primary uppercase tracking-widest leading-none">Flow Context</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p className="text-xs text-muted-foreground/70 leading-relaxed mb-1">
+                            Linked to Flow
+                        </p>
+                        <div className="flex items-center gap-2">
+                            <span className="font-bold text-sm text-foreground">{currentFlow.title}</span>
+                            {currentFlow.tags?.slice(0, 2).map((tag: string) => (
+                                <span key={tag} className="text-[9px] bg-background/50 px-1.5 py-0.5 rounded-md text-muted-foreground border border-border/50">
+                                    #{tag}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+
+                    <Button
+                        variant="default"
+                        size="sm"
+                        className="w-full rounded-2xl text-[10px] font-bold shadow-sm hover:shadow-md transition-shadow"
+                        onClick={async () => {
+                            setFlowId(currentFlow.id); // Update client-side store immediately
+                            await updateSelectedFlow(currentFlow.id);
+                            router.push('/notes'); // navigate after update
+                        }}
+                    >
+                        Open Flow Notes
+                        <ExternalLink className="ml-2 h-3 w-3" />
                     </Button>
                 </div>
             )}

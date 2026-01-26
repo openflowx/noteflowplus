@@ -59,7 +59,11 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
 
             {/* Main navigation */}
             <SidebarContent className="px-2">
+
+                {/* Flow Switcher */}
                 <FlowSwitcher />
+
+                {/* Main menu */}
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu className="gap-1">
